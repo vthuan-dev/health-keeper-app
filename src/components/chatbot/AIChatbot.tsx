@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, User, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Sparkles, Stethoscope, Heart, Apple, Dumbbell, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,10 +12,23 @@ interface Message {
   timestamp: Date;
 }
 
+interface QuickAction {
+  icon: React.ElementType;
+  label: string;
+  message: string;
+}
+
+const quickActions: QuickAction[] = [
+  { icon: Heart, label: "Huyết áp", message: "Huyết áp của tôi cao, tôi nên làm gì?" },
+  { icon: Apple, label: "Dinh dưỡng", message: "Chế độ ăn healthy cho người giảm cân?" },
+  { icon: Dumbbell, label: "Tập luyện", message: "Bài tập cardio hiệu quả cho người mới?" },
+  { icon: Moon, label: "Giấc ngủ", message: "Làm sao để ngủ ngon hơn?" },
+];
+
 const INITIAL_MESSAGE: Message = {
   id: "welcome",
   role: "assistant",
-  content: "Xin chào! Tôi là Bác sĩ AI của bạn. Tôi có thể giúp bạn tư vấn về sức khỏe, dinh dưỡng, và lối sống lành mạnh. Bạn có câu hỏi gì không? 🩺",
+  content: "Xin chào! 👋 Tôi là **Bác sĩ AI** - trợ lý sức khỏe thông minh của bạn.\n\nTôi có thể giúp bạn:\n• Tư vấn về sức khỏe & dinh dưỡng\n• Phân tích các chỉ số cơ thể\n• Đề xuất bài tập phù hợp\n\nHãy hỏi tôi bất cứ điều gì! 🩺",
   timestamp: new Date(),
 };
 
@@ -35,17 +48,17 @@ export function AIChatbot() {
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+      setTimeout(() => inputRef.current?.focus(), 300);
     }
   }, [isOpen]);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
+  const sendMessage = async (text: string) => {
+    if (!text.trim()) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
-      content: input.trim(),
+      content: text.trim(),
       timestamp: new Date(),
     };
 
@@ -53,13 +66,13 @@ export function AIChatbot() {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response (replace with actual API call later)
+    // Simulate AI response
     setTimeout(() => {
       const responses = [
-        "Đó là một câu hỏi hay! Dựa trên thông tin bạn cung cấp, tôi khuyên bạn nên duy trì chế độ ăn uống cân bằng và tập thể dục đều đặn. 💪",
-        "Tôi hiểu lo lắng của bạn. Để có kết quả chính xác hơn, bạn nên tham khảo ý kiến bác sĩ chuyên khoa. Tuy nhiên, một số lời khuyên chung là uống đủ nước và ngủ đủ giấc. 😊",
-        "Cảm ơn bạn đã chia sẻ! Việc theo dõi các chỉ số sức khỏe hàng ngày là rất quan trọng. Hãy tiếp tục duy trì thói quen tốt này nhé! 🌟",
-        "Theo thông tin bạn cung cấp, tôi gợi ý bạn nên bổ sung thêm rau xanh và trái cây vào chế độ ăn. Ngoài ra, hãy cố gắng đi bộ ít nhất 30 phút mỗi ngày. 🥗",
+        "Đó là một câu hỏi rất hay! 🎯\n\nDựa trên thông tin bạn cung cấp, tôi khuyên bạn nên:\n\n1. **Duy trì chế độ ăn cân bằng** - ưu tiên rau xanh và protein\n2. **Tập thể dục đều đặn** - ít nhất 30 phút/ngày\n3. **Uống đủ nước** - 2-3 lít mỗi ngày\n\nBạn có muốn tôi giải thích chi tiết hơn không? 💪",
+        "Tôi hiểu lo lắng của bạn! 😊\n\nĐể có kết quả chính xác, bạn nên:\n\n• **Theo dõi chỉ số** hàng ngày\n• **Ghi chép** lại các triệu chứng\n• **Tham khảo bác sĩ** nếu cần thiết\n\nMột số lời khuyên: ngủ đủ 7-8 tiếng và giảm stress. 🌟",
+        "Cảm ơn bạn đã chia sẻ! 🙏\n\nViệc theo dõi sức khỏe hàng ngày rất quan trọng. Dựa vào dữ liệu của bạn, tôi thấy:\n\n✅ **Điểm tốt**: Bạn đang duy trì thói quen tốt\n⚠️ **Cần cải thiện**: Có thể tăng cường vận động\n\nHãy tiếp tục cố gắng nhé! 💚",
+        "Theo thông tin bạn cung cấp, đây là gợi ý của tôi: 📋\n\n**Chế độ ăn:**\n• Bổ sung rau xanh và trái cây\n• Hạn chế đường và muối\n• Ăn đủ protein\n\n**Vận động:**\n• Đi bộ 30 phút/ngày\n• Yoga hoặc stretching buổi sáng\n\nBạn cần tư vấn thêm gì không? 🥗",
       ];
       
       const aiMessage: Message = {
@@ -74,11 +87,23 @@ export function AIChatbot() {
     }, 1500);
   };
 
+  const handleSend = () => sendMessage(input);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const handleQuickAction = (action: QuickAction) => {
+    sendMessage(action.message);
+  };
+
+  const formatMessage = (content: string) => {
+    return content
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+      .replace(/\n/g, '<br/>');
   };
 
   return (
@@ -87,89 +112,97 @@ export function AIChatbot() {
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-20 right-4 z-40 w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 active:scale-95",
-          "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground",
-          "flex items-center justify-center",
-          isOpen && "scale-0 opacity-0"
+          "fixed bottom-20 right-4 z-40 w-14 h-14 rounded-full shadow-xl transition-all duration-300 hover:scale-110 active:scale-95",
+          "bg-gradient-to-br from-primary via-primary to-primary/80",
+          "flex items-center justify-center group",
+          "before:absolute before:inset-0 before:rounded-full before:bg-primary/20 before:animate-ping before:opacity-75",
+          isOpen && "scale-0 opacity-0 pointer-events-none"
         )}
         aria-label="Mở chatbot bác sĩ AI"
       >
-        <MessageCircle className="w-6 h-6" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full flex items-center justify-center">
-          <Sparkles className="w-2.5 h-2.5 text-destructive-foreground" />
+        <Stethoscope className="w-6 h-6 text-primary-foreground relative z-10 group-hover:rotate-12 transition-transform" />
+        <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-health-accent to-primary rounded-full flex items-center justify-center shadow-lg border-2 border-background">
+          <Sparkles className="w-2.5 h-2.5 text-primary-foreground" />
         </span>
       </button>
 
       {/* Chat Panel */}
       <div
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 transition-transform duration-300 ease-out",
+          "fixed inset-x-0 bottom-0 z-50 transition-all duration-500 ease-out",
           "max-w-md mx-auto",
-          isOpen ? "translate-y-0" : "translate-y-full"
+          isOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
         )}
       >
-        <div className="bg-card border border-border rounded-t-3xl shadow-2xl overflow-hidden flex flex-col h-[70vh]">
+        <div className="bg-card border border-border/50 rounded-t-[28px] shadow-2xl overflow-hidden flex flex-col h-[75vh]">
           {/* Header */}
-          <div className="bg-gradient-to-r from-primary to-primary/80 px-4 py-3 flex items-center gap-3">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-primary-foreground" />
+          <div className="relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-health-accent opacity-95" />
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoLTR2LTJoNHYtNGgydjRoNHYyaC00djR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+            
+            <div className="relative px-5 py-4 flex items-center gap-4">
+              <div className="relative">
+                <div className="w-12 h-12 rounded-2xl bg-background/20 backdrop-blur-sm flex items-center justify-center border border-primary-foreground/20 shadow-lg">
+                  <Bot className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 border-2 border-primary rounded-full shadow-sm" />
               </div>
-              <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 border-2 border-primary rounded-full" />
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-primary-foreground text-base">Bác sĩ AI</h3>
+                  <span className="px-2 py-0.5 bg-primary-foreground/20 rounded-full text-[10px] font-medium text-primary-foreground">
+                    Online
+                  </span>
+                </div>
+                <p className="text-xs text-primary-foreground/80 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  Tư vấn sức khỏe thông minh 24/7
+                </p>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-primary-foreground hover:bg-primary-foreground/20 rounded-xl h-10 w-10"
+                onClick={() => setIsOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </Button>
             </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-primary-foreground text-sm">Bác sĩ AI</h3>
-              <p className="text-xs text-primary-foreground/80">Tư vấn sức khỏe 24/7</p>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-primary-foreground hover:bg-primary-foreground/20 rounded-full"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="w-5 h-5" />
-            </Button>
           </div>
 
           {/* Messages */}
-          <ScrollArea ref={scrollRef} className="flex-1 p-4">
+          <ScrollArea ref={scrollRef} className="flex-1 px-4 py-4">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
                   className={cn(
-                    "flex gap-2 animate-fade-in",
+                    "flex gap-3 animate-fade-in",
                     message.role === "user" ? "flex-row-reverse" : "flex-row"
                   )}
                 >
+                  {message.role === "assistant" && (
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center shrink-0 border border-primary/10">
+                      <Bot className="w-4 h-4 text-primary" />
+                    </div>
+                  )}
                   <div
                     className={cn(
-                      "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
+                      "max-w-[80%] rounded-2xl px-4 py-3 shadow-sm",
                       message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-primary/10 text-primary"
+                        ? "bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-tr-md"
+                        : "bg-muted/80 text-foreground rounded-tl-md border border-border/50"
                     )}
                   >
-                    {message.role === "user" ? (
-                      <User className="w-4 h-4" />
-                    ) : (
-                      <Bot className="w-4 h-4" />
-                    )}
-                  </div>
-                  <div
-                    className={cn(
-                      "max-w-[75%] rounded-2xl px-4 py-2.5",
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground rounded-tr-sm"
-                        : "bg-muted text-foreground rounded-tl-sm"
-                    )}
-                  >
-                    <p className="text-sm leading-relaxed">{message.content}</p>
+                    <div 
+                      className="text-sm leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: formatMessage(message.content) }}
+                    />
                     <p
                       className={cn(
-                        "text-[10px] mt-1",
+                        "text-[10px] mt-2 flex items-center gap-1",
                         message.role === "user"
-                          ? "text-primary-foreground/70"
+                          ? "text-primary-foreground/60 justify-end"
                           : "text-muted-foreground"
                       )}
                     >
@@ -177,23 +210,58 @@ export function AIChatbot() {
                         hour: "2-digit",
                         minute: "2-digit",
                       })}
+                      {message.role === "user" && (
+                        <span className="inline-flex">✓✓</span>
+                      )}
                     </p>
                   </div>
+                  {message.role === "user" && (
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shrink-0 shadow-md">
+                      <User className="w-4 h-4 text-primary-foreground" />
+                    </div>
+                  )}
                 </div>
               ))}
 
               {/* Typing indicator */}
               {isTyping && (
-                <div className="flex gap-2 animate-fade-in">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="flex gap-3 animate-fade-in">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/10">
                     <Bot className="w-4 h-4 text-primary" />
                   </div>
-                  <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-3">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                  <div className="bg-muted/80 rounded-2xl rounded-tl-md px-4 py-4 border border-border/50">
+                    <div className="flex gap-1.5">
+                      <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Quick Actions - Show only after first message */}
+              {messages.length === 1 && !isTyping && (
+                <div className="pt-2 animate-fade-in">
+                  <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    Gợi ý nhanh
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {quickActions.map((action, idx) => {
+                      const Icon = action.icon;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => handleQuickAction(action)}
+                          className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-muted/50 border border-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all text-left group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                            <Icon className="w-4 h-4 text-primary" />
+                          </div>
+                          <span className="text-xs font-medium text-foreground">{action.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -201,28 +269,33 @@ export function AIChatbot() {
           </ScrollArea>
 
           {/* Input */}
-          <div className="p-4 border-t border-border bg-background/50 backdrop-blur-sm">
-            <div className="flex gap-2">
-              <Input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Nhập câu hỏi của bạn..."
-                className="flex-1 rounded-full bg-muted border-0 focus-visible:ring-primary"
-              />
+          <div className="p-4 border-t border-border/50 bg-background/80 backdrop-blur-sm">
+            <div className="flex gap-2 items-center">
+              <div className="flex-1 relative">
+                <Input
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Nhập câu hỏi sức khỏe..."
+                  className="w-full rounded-xl bg-muted/50 border-border/50 focus-visible:ring-primary/50 pr-4 h-11"
+                />
+              </div>
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || isTyping}
                 size="icon"
-                className="rounded-full shrink-0"
+                className="rounded-xl h-11 w-11 shrink-0 bg-gradient-to-br from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md"
               >
                 <Send className="w-4 h-4" />
               </Button>
             </div>
-            <p className="text-[10px] text-muted-foreground text-center mt-2">
-              Lưu ý: Đây chỉ là tư vấn tham khảo, không thay thế khám bác sĩ
-            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-3">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              <p className="text-[10px] text-muted-foreground">
+                Được hỗ trợ bởi AI • Chỉ mang tính tham khảo
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -230,7 +303,7 @@ export function AIChatbot() {
       {/* Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 animate-fade-in"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 animate-fade-in"
           onClick={() => setIsOpen(false)}
         />
       )}
