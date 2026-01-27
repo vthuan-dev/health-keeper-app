@@ -40,8 +40,7 @@ export default function Dashboard() {
               icon={Flame}
               label="Calo"
               value="1,250"
-              unit="kcal"
-              subtitle="/ 1,800"
+              subtitle="/ 1,800 kcal"
               variant="accent"
             />
           </div>
