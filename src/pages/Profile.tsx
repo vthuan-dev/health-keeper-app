@@ -20,58 +20,34 @@ import {
 export default function Profile() {
   return (
     <AppLayout>
-      <div className="px-4 py-6 animate-fade-in">
+      <div className="px-4 py-4 animate-fade-in">
         {/* Profile Header */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           <div className="relative inline-block">
-            <Avatar className="w-24 h-24 border-4 border-primary/20">
+            <Avatar className="w-20 h-20 border-4 border-primary/20">
               <AvatarImage src="" />
-              <AvatarFallback className="text-2xl bg-primary/10 text-primary">NA</AvatarFallback>
+              <AvatarFallback className="text-xl bg-primary/10 text-primary">NA</AvatarFallback>
             </Avatar>
             <Button
               size="icon"
-              className="absolute bottom-0 right-0 w-8 h-8 rounded-full gradient-primary"
+              className="absolute bottom-0 right-0 w-7 h-7 rounded-full gradient-primary"
             >
-              <Camera className="w-4 h-4" />
+              <Camera className="w-3.5 h-3.5" />
             </Button>
           </div>
-          <h1 className="text-xl font-bold mt-3">Nguyễn Văn A</h1>
-          <p className="text-sm text-muted-foreground">nguyenvana@email.com</p>
+          <h1 className="text-lg font-bold mt-2">Nguyễn Văn A</h1>
+          <p className="text-xs text-muted-foreground">nguyenvana@email.com</p>
         </div>
 
         {/* Health Stats */}
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <h2 className="text-sm font-semibold mb-3">Thông tin sức khỏe</h2>
-            <div className="grid grid-cols-4 gap-4 text-center">
-              <div>
-                <div className="p-2 rounded-full bg-primary/10 w-10 h-10 flex items-center justify-center mx-auto mb-1">
-                  <Calendar className="w-4 h-4 text-primary" />
-                </div>
-                <p className="text-lg font-bold">32</p>
-                <p className="text-xs text-muted-foreground">Tuổi</p>
-              </div>
-              <div>
-                <div className="p-2 rounded-full bg-health-info/10 w-10 h-10 flex items-center justify-center mx-auto mb-1">
-                  <Ruler className="w-4 h-4 text-health-info" />
-                </div>
-                <p className="text-lg font-bold">175</p>
-                <p className="text-xs text-muted-foreground">cm</p>
-              </div>
-              <div>
-                <div className="p-2 rounded-full bg-health-accent/10 w-10 h-10 flex items-center justify-center mx-auto mb-1">
-                  <Scale className="w-4 h-4 text-health-accent" />
-                </div>
-                <p className="text-lg font-bold">68.5</p>
-                <p className="text-xs text-muted-foreground">kg</p>
-              </div>
-              <div>
-                <div className="p-2 rounded-full bg-primary/10 w-10 h-10 flex items-center justify-center mx-auto mb-1">
-                  <User className="w-4 h-4 text-primary" />
-                </div>
-                <p className="text-lg font-bold">22.4</p>
-                <p className="text-xs text-muted-foreground">BMI</p>
-              </div>
+        <Card className="mb-4">
+          <CardContent className="p-3">
+            <h2 className="text-xs font-semibold mb-2 text-muted-foreground">THÔNG TIN SỨC KHỎE</h2>
+            <div className="grid grid-cols-4 gap-2 text-center">
+              <StatItem icon={Calendar} value="32" label="Tuổi" color="text-primary" bg="bg-primary/10" />
+              <StatItem icon={Ruler} value="175" label="cm" color="text-health-info" bg="bg-health-info/10" />
+              <StatItem icon={Scale} value="68.5" label="kg" color="text-health-accent" bg="bg-health-accent/10" />
+              <StatItem icon={User} value="22.4" label="BMI" color="text-primary" bg="bg-primary/10" />
             </div>
           </CardContent>
         </Card>
@@ -83,16 +59,36 @@ export default function Profile() {
             <SettingItem icon={Bell} label="Thông báo" hasSwitch defaultChecked />
             <SettingItem icon={Moon} label="Chế độ tối" hasSwitch />
             <SettingItem icon={Shield} label="Quyền riêng tư" />
-            <SettingItem icon={HelpCircle} label="Trợ giúp & Hỗ trợ" />
+            <SettingItem icon={HelpCircle} label="Trợ giúp" />
             <SettingItem icon={LogOut} label="Đăng xuất" isDestructive />
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-[10px] text-muted-foreground mt-4">
           Phiên bản 1.0.0
         </p>
       </div>
     </AppLayout>
+  );
+}
+
+interface StatItemProps {
+  icon: React.ElementType;
+  value: string;
+  label: string;
+  color: string;
+  bg: string;
+}
+
+function StatItem({ icon: Icon, value, label, color, bg }: StatItemProps) {
+  return (
+    <div>
+      <div className={`p-1.5 rounded-full ${bg} w-8 h-8 flex items-center justify-center mx-auto mb-1`}>
+        <Icon className={`w-3.5 h-3.5 ${color}`} />
+      </div>
+      <p className="text-sm font-bold">{value}</p>
+      <p className="text-[9px] text-muted-foreground">{label}</p>
+    </div>
   );
 }
 
@@ -106,15 +102,15 @@ interface SettingItemProps {
 
 function SettingItem({ icon: Icon, label, hasSwitch, defaultChecked, isDestructive }: SettingItemProps) {
   return (
-    <div className="flex items-center justify-between p-4">
-      <div className="flex items-center gap-3">
-        <Icon className={`w-5 h-5 ${isDestructive ? "text-destructive" : "text-muted-foreground"}`} />
-        <span className={`font-medium ${isDestructive ? "text-destructive" : ""}`}>{label}</span>
+    <div className="flex items-center justify-between px-3 py-2.5">
+      <div className="flex items-center gap-2.5">
+        <Icon className={`w-4 h-4 ${isDestructive ? "text-destructive" : "text-muted-foreground"}`} />
+        <span className={`text-sm ${isDestructive ? "text-destructive" : ""}`}>{label}</span>
       </div>
       {hasSwitch ? (
-        <Switch defaultChecked={defaultChecked} />
+        <Switch defaultChecked={defaultChecked} className="scale-90" />
       ) : (
-        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+        <ChevronRight className="w-4 h-4 text-muted-foreground" />
       )}
     </div>
   );
