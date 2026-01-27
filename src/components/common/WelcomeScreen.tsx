@@ -34,22 +34,55 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
         background: "linear-gradient(180deg, #3B82F6 0%, #60A5FA 15%, #FFFFFF 40%, #FFFFFF 60%, #60A5FA 85%, #3B82F6 100%)"
       }}
     >
+      {/* Floating bubbles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white/30 backdrop-blur-sm"
+            style={{
+              width: `${Math.random() * 40 + 15}px`,
+              height: `${Math.random() * 40 + 15}px`,
+              left: `${Math.random() * 100}%`,
+              bottom: `-${Math.random() * 20 + 10}%`,
+              animation: `floatUp ${Math.random() * 4 + 4}s ease-in-out ${Math.random() * 2}s infinite`,
+              opacity: Math.random() * 0.5 + 0.2,
+            }}
+          />
+        ))}
+        {/* Larger decorative bubbles */}
+        {[...Array(5)].map((_, i) => (
+          <div
+            key={`large-${i}`}
+            className="absolute rounded-full border border-white/20 bg-white/10"
+            style={{
+              width: `${Math.random() * 80 + 60}px`,
+              height: `${Math.random() * 80 + 60}px`,
+              left: `${Math.random() * 100}%`,
+              bottom: `-${Math.random() * 30 + 20}%`,
+              animation: `floatUp ${Math.random() * 6 + 6}s ease-in-out ${Math.random() * 3}s infinite`,
+              opacity: Math.random() * 0.3 + 0.1,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Decorative circles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className={cn(
-          "absolute -top-20 -left-20 w-64 h-64 rounded-full bg-white/5 transition-all duration-1000",
+          "absolute -top-20 -left-20 w-64 h-64 rounded-full bg-blue-400/10 transition-all duration-1000",
           stage >= 1 ? "scale-100 opacity-100" : "scale-50 opacity-0"
         )} />
         <div className={cn(
-          "absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-white/5 transition-all duration-1000 delay-200",
+          "absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-blue-400/10 transition-all duration-1000 delay-200",
           stage >= 1 ? "scale-100 opacity-100" : "scale-50 opacity-0"
         )} />
         <div className={cn(
-          "absolute top-1/4 right-10 w-20 h-20 rounded-full bg-white/10 transition-all duration-700 delay-300",
+          "absolute top-1/4 right-10 w-20 h-20 rounded-full bg-blue-300/20 transition-all duration-700 delay-300",
           stage >= 1 ? "scale-100 opacity-100" : "scale-0 opacity-0"
         )} />
         <div className={cn(
-          "absolute bottom-1/3 left-10 w-16 h-16 rounded-full bg-white/10 transition-all duration-700 delay-500",
+          "absolute bottom-1/3 left-10 w-16 h-16 rounded-full bg-blue-300/20 transition-all duration-700 delay-500",
           stage >= 1 ? "scale-100 opacity-100" : "scale-0 opacity-0"
         )} />
       </div>
@@ -111,6 +144,12 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
         @keyframes bounce {
           0%, 100% { transform: translateY(0); opacity: 0.6; }
           50% { transform: translateY(-8px); opacity: 1; }
+        }
+        @keyframes floatUp {
+          0% { transform: translateY(0) scale(1); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(-100vh) scale(0.8); opacity: 0; }
         }
       `}</style>
     </div>
