@@ -27,9 +27,12 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
   return (
     <div 
       className={cn(
-        "fixed inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-br from-primary via-primary to-emerald-600 transition-opacity duration-500",
+        "fixed inset-0 z-[200] flex flex-col items-center justify-center transition-opacity duration-500",
         stage >= 3 ? "opacity-0" : "opacity-100"
       )}
+      style={{
+        background: "linear-gradient(180deg, #3B82F6 0%, #60A5FA 15%, #FFFFFF 40%, #FFFFFF 60%, #60A5FA 85%, #3B82F6 100%)"
+      }}
     >
       {/* Decorative circles */}
       <div className="absolute inset-0 overflow-hidden">
