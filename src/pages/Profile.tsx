@@ -1,117 +1,145 @@
 import { AppLayout } from "@/components/layout/AppLayout";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
+import { HealthStatsCard } from "@/components/profile/HealthStatsCard";
+import { SettingsList, SettingItem } from "@/components/profile/SettingsList";
 import { 
-  Camera, 
   User, 
   Bell, 
   Moon, 
   Shield, 
   HelpCircle, 
-  LogOut,
-  ChevronRight,
-  Scale,
-  Ruler,
-  Calendar
+  LogOut 
 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "next-themes";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+interface UserProfile {
+  name: string;
+  email: string;
+  age: number;
+  height: number;
+  weight: number;
+}
+
+const defaultProfile: UserProfile = {
+  name: "Nguyễn Văn A",
+  email: "nguyenvana@email.com",
+  age: 32,
+  height: 175,
+  weight: 68.5,
+};
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
+  const [profile, setProfile] = useState<UserProfile>(defaultProfile);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+  useEffect(() => {
+    const savedProfile = localStorage.getItem("userProfile");
+    if (savedProfile) {
+      setProfile(JSON.parse(savedProfile));
+    }
+
+    const savedNotifications = localStorage.getItem("notificationsEnabled");
+    if (savedNotifications !== null) {
+      setNotificationsEnabled(JSON.parse(savedNotifications));
+    }
+  }, []);
+
+  const handleNotificationToggle = (checked: boolean) => {
+    setNotificationsEnabled(checked);
+    localStorage.setItem("notificationsEnabled", JSON.stringify(checked));
+  };
+
+  const handleDarkModeToggle = (checked: boolean) => {
+    setTheme(checked ? "dark" : "light");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userProfile");
+    navigate("/auth");
+  };
+
+  const bmi = profile.weight / Math.pow(profile.height / 100, 2);
+
   return (
     <AppLayout>
       <div className="px-4 py-4 animate-fade-in">
-        {/* Profile Header */}
-        <div className="text-center mb-4">
-          <div className="relative inline-block">
-            <Avatar className="w-20 h-20 border-4 border-primary/20">
-              <AvatarImage src="" />
-              <AvatarFallback className="text-xl bg-primary/10 text-primary">NA</AvatarFallback>
-            </Avatar>
-            <Button
-              size="icon"
-              className="absolute bottom-0 right-0 w-7 h-7 rounded-full gradient-primary"
-            >
-              <Camera className="w-3.5 h-3.5" />
-            </Button>
-          </div>
-          <h1 className="text-lg font-bold mt-2">Nguyễn Văn A</h1>
-          <p className="text-xs text-muted-foreground">nguyenvana@email.com</p>
-        </div>
+        <ProfileHeader 
+          name={profile.name}
+          email={profile.email}
+          initials={profile.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+        />
 
-        {/* Health Stats */}
-        <Card className="mb-4">
-          <CardContent className="p-3">
-            <h2 className="text-xs font-semibold mb-2 text-muted-foreground">THÔNG TIN SỨC KHỎE</h2>
-            <div className="grid grid-cols-4 gap-2 text-center">
-              <StatItem icon={Calendar} value="32" label="Tuổi" color="text-primary" bg="bg-primary/10" />
-              <StatItem icon={Ruler} value="175" label="cm" color="text-health-info" bg="bg-health-info/10" />
-              <StatItem icon={Scale} value="68.5" label="kg" color="text-health-accent" bg="bg-health-accent/10" />
-              <StatItem icon={User} value="22.4" label="BMI" color="text-primary" bg="bg-primary/10" />
-            </div>
-          </CardContent>
-        </Card>
+        <HealthStatsCard 
+          stats={{
+            age: profile.age,
+            height: profile.height,
+            weight: profile.weight,
+            bmi: bmi,
+          }}
+        />
 
-        {/* Settings List */}
-        <Card>
-          <CardContent className="p-0 divide-y divide-border">
-            <SettingItem icon={User} label="Chỉnh sửa hồ sơ" />
-            <SettingItem icon={Bell} label="Thông báo" hasSwitch defaultChecked />
-            <SettingItem icon={Moon} label="Chế độ tối" hasSwitch />
-            <SettingItem icon={Shield} label="Quyền riêng tư" />
-            <SettingItem icon={HelpCircle} label="Trợ giúp" />
-            <SettingItem icon={LogOut} label="Đăng xuất" isDestructive />
-          </CardContent>
-        </Card>
+        <SettingsList>
+          <SettingItem icon={User} label="Chỉnh sửa hồ sơ" to="/profile/edit" />
+          <SettingItem 
+            icon={Bell} 
+            label="Thông báo" 
+            hasSwitch 
+            checked={notificationsEnabled}
+            onCheckedChange={handleNotificationToggle}
+          />
+          <SettingItem 
+            icon={Moon} 
+            label="Chế độ tối" 
+            hasSwitch 
+            checked={theme === "dark"}
+            onCheckedChange={handleDarkModeToggle}
+          />
+          <SettingItem icon={Shield} label="Quyền riêng tư" to="/profile/privacy" />
+          <SettingItem icon={HelpCircle} label="Trợ giúp" to="/profile/help" />
+          <SettingItem 
+            icon={LogOut} 
+            label="Đăng xuất" 
+            isDestructive 
+            onClick={() => setShowLogoutDialog(true)}
+          />
+        </SettingsList>
 
         <p className="text-center text-[10px] text-muted-foreground mt-4">
           Phiên bản 1.0.0
         </p>
+
+        <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+          <AlertDialogContent className="max-w-[90%] rounded-lg">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Đăng xuất?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Bạn có chắc chắn muốn đăng xuất khỏi tài khoản?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Hủy</AlertDialogCancel>
+              <AlertDialogAction onClick={handleLogout} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Đăng xuất
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </AppLayout>
-  );
-}
-
-interface StatItemProps {
-  icon: React.ElementType;
-  value: string;
-  label: string;
-  color: string;
-  bg: string;
-}
-
-function StatItem({ icon: Icon, value, label, color, bg }: StatItemProps) {
-  return (
-    <div>
-      <div className={`p-1.5 rounded-full ${bg} w-8 h-8 flex items-center justify-center mx-auto mb-1`}>
-        <Icon className={`w-3.5 h-3.5 ${color}`} />
-      </div>
-      <p className="text-sm font-bold">{value}</p>
-      <p className="text-[9px] text-muted-foreground">{label}</p>
-    </div>
-  );
-}
-
-interface SettingItemProps {
-  icon: React.ElementType;
-  label: string;
-  hasSwitch?: boolean;
-  defaultChecked?: boolean;
-  isDestructive?: boolean;
-}
-
-function SettingItem({ icon: Icon, label, hasSwitch, defaultChecked, isDestructive }: SettingItemProps) {
-  return (
-    <div className="flex items-center justify-between px-3 py-2.5">
-      <div className="flex items-center gap-2.5">
-        <Icon className={`w-4 h-4 ${isDestructive ? "text-destructive" : "text-muted-foreground"}`} />
-        <span className={`text-sm ${isDestructive ? "text-destructive" : ""}`}>{label}</span>
-      </div>
-      {hasSwitch ? (
-        <Switch defaultChecked={defaultChecked} className="scale-90" />
-      ) : (
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      )}
-    </div>
   );
 }
