@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, Ruler, Scale, User } from "lucide-react";
+import { Activity, Ruler, Scale, Heart } from "lucide-react";
 
 interface HealthStats {
   age: number;
@@ -16,32 +16,67 @@ interface StatItemProps {
   icon: React.ElementType;
   value: string;
   label: string;
-  color: string;
-  bg: string;
+  gradient: string;
 }
 
-function StatItem({ icon: Icon, value, label, color, bg }: StatItemProps) {
+function StatItem({ icon: Icon, value, label, gradient }: StatItemProps) {
   return (
-    <div>
-      <div className={`p-1.5 rounded-full ${bg} w-8 h-8 flex items-center justify-center mx-auto mb-1`}>
-        <Icon className={`w-3.5 h-3.5 ${color}`} />
+    <div className="flex flex-col items-center p-3 rounded-2xl bg-muted/50 hover:bg-muted transition-colors">
+      <div className={`p-2.5 rounded-xl ${gradient} mb-2`}>
+        <Icon className="w-4 h-4 text-primary-foreground" />
       </div>
-      <p className="text-sm font-bold">{value}</p>
-      <p className="text-[9px] text-muted-foreground">{label}</p>
+      <p className="text-lg font-bold">{value}</p>
+      <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{label}</p>
     </div>
   );
 }
 
+function getBMIStatus(bmi: number): { label: string; color: string } {
+  if (bmi < 18.5) return { label: "Thiếu cân", color: "text-health-info" };
+  if (bmi < 25) return { label: "Bình thường", color: "text-health-accent" };
+  if (bmi < 30) return { label: "Thừa cân", color: "text-health-warning" };
+  return { label: "Béo phì", color: "text-destructive" };
+}
+
 export function HealthStatsCard({ stats }: HealthStatsCardProps) {
+  const bmiStatus = getBMIStatus(stats.bmi);
+  
   return (
-    <Card className="mb-4">
-      <CardContent className="p-3">
-        <h2 className="text-xs font-semibold mb-2 text-muted-foreground">THÔNG TIN SỨC KHỎE</h2>
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <StatItem icon={Calendar} value={stats.age.toString()} label="Tuổi" color="text-primary" bg="bg-primary/10" />
-          <StatItem icon={Ruler} value={stats.height.toString()} label="cm" color="text-health-info" bg="bg-health-info/10" />
-          <StatItem icon={Scale} value={stats.weight.toString()} label="kg" color="text-health-accent" bg="bg-health-accent/10" />
-          <StatItem icon={User} value={stats.bmi.toFixed(1)} label="BMI" color="text-primary" bg="bg-primary/10" />
+    <Card className="mx-4 -mt-2 shadow-lg border-0 bg-card/80 backdrop-blur">
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+            Thông tin sức khỏe
+          </h2>
+          <span className={`text-xs font-medium ${bmiStatus.color}`}>
+            BMI: {bmiStatus.label}
+          </span>
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          <StatItem 
+            icon={Heart} 
+            value={stats.age.toString()} 
+            label="Tuổi" 
+            gradient="bg-gradient-to-br from-rose-500 to-pink-600" 
+          />
+          <StatItem 
+            icon={Ruler} 
+            value={stats.height.toString()} 
+            label="cm" 
+            gradient="bg-gradient-to-br from-blue-500 to-cyan-600" 
+          />
+          <StatItem 
+            icon={Scale} 
+            value={stats.weight.toString()} 
+            label="kg" 
+            gradient="bg-gradient-to-br from-amber-500 to-orange-600" 
+          />
+          <StatItem 
+            icon={Activity} 
+            value={stats.bmi.toFixed(1)} 
+            label="BMI" 
+            gradient="gradient-primary" 
+          />
         </div>
       </CardContent>
     </Card>
