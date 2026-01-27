@@ -87,26 +87,16 @@ export function RadialMenu({ isOpen, onClose }: RadialMenuProps) {
 
   return (
     <div className="fixed inset-0 z-[100]">
-      {/* Backdrop with gradient */}
+      {/* Subtle backdrop */}
       <div 
         className={cn(
-          "absolute inset-0 transition-all duration-400",
+          "absolute inset-0 transition-all duration-300",
           animateItems 
-            ? "bg-gradient-to-t from-background via-background/95 to-background/80 backdrop-blur-md opacity-100" 
+            ? "bg-black/20 backdrop-blur-[2px] opacity-100" 
             : "opacity-0"
         )}
         onClick={onClose}
       />
-      
-      {/* Decorative circles */}
-      <div className={cn(
-        "absolute bottom-20 left-1/2 -translate-x-1/2 w-80 h-80 rounded-full border border-primary/10 transition-all duration-500",
-        animateItems ? "scale-100 opacity-100" : "scale-50 opacity-0"
-      )} />
-      <div className={cn(
-        "absolute bottom-16 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full border border-primary/5 transition-all duration-700",
-        animateItems ? "scale-100 opacity-100" : "scale-50 opacity-0"
-      )} />
       
       {/* Menu Container */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-7">
@@ -121,81 +111,53 @@ export function RadialMenu({ isOpen, onClose }: RadialMenuProps) {
                 key={item.id}
                 onClick={() => handleItemClick(item.path)}
                 className={cn(
-                  "absolute flex flex-col items-center gap-2 transition-all ease-out group",
+                  "absolute transition-all ease-out group",
                   animateItems 
-                    ? "opacity-100 scale-100 duration-400" 
-                    : "opacity-0 scale-0 duration-300"
+                    ? "opacity-100 scale-100 duration-300" 
+                    : "opacity-0 scale-0 duration-200"
                 )}
                 style={{
                   transform: animateItems 
                     ? `translate(${pos.x}px, ${pos.y}px)` 
                     : 'translate(0, 0)',
-                  transitionDelay: animateItems ? `${index * 50}ms` : `${(menuItems.length - index) * 30}ms`,
+                  transitionDelay: animateItems ? `${index * 40}ms` : `${(menuItems.length - index) * 20}ms`,
                   left: '50%',
                   top: '50%',
-                  marginLeft: '-32px',
-                  marginTop: '-32px',
+                  marginLeft: '-28px',
+                  marginTop: '-28px',
                 }}
               >
-                {/* Icon circle with gradient and glow */}
+                {/* Icon circle with gradient */}
                 <div className="relative">
                   <div className={cn(
-                    "absolute inset-0 rounded-full blur-lg opacity-50 transition-opacity group-hover:opacity-80",
+                    "absolute inset-0 rounded-full blur-md opacity-40 transition-opacity group-hover:opacity-70",
                     `bg-gradient-to-br ${item.gradient}`
                   )} />
                   <div className={cn(
-                    "relative w-16 h-16 rounded-full flex items-center justify-center shadow-2xl",
+                    "relative w-14 h-14 rounded-full flex items-center justify-center shadow-xl",
                     "transition-all duration-200 group-hover:scale-110 group-active:scale-95",
-                    "ring-4 ring-white/20 dark:ring-white/10",
                     `bg-gradient-to-br ${item.gradient}`
                   )}>
-                    <Icon className="w-7 h-7 text-white drop-shadow-md" strokeWidth={2.5} />
+                    <Icon className="w-6 h-6 text-white" strokeWidth={2.5} />
                   </div>
                 </div>
-                
-                {/* Label */}
-                <span className={cn(
-                  "text-xs font-semibold text-foreground whitespace-nowrap",
-                  "px-2.5 py-1 rounded-full",
-                  "bg-card/90 dark:bg-card/80 backdrop-blur-sm shadow-lg",
-                  "border border-border/50",
-                  "transition-all duration-200 group-hover:scale-105"
-                )}>
-                  {item.label}
-                </span>
               </button>
             );
           })}
           
-          {/* Close Button with glow */}
-          <div className="relative">
-            <div className={cn(
-              "absolute inset-0 rounded-full blur-xl transition-opacity duration-300",
-              "bg-gradient-to-br from-primary to-primary/50",
-              animateItems ? "opacity-60" : "opacity-0"
-            )} />
-            <button
-              onClick={onClose}
-              className={cn(
-                "relative w-16 h-16 rounded-full gradient-primary shadow-2xl",
-                "flex items-center justify-center transition-all duration-300",
-                "ring-4 ring-primary/20",
-                "hover:scale-105 active:scale-95",
-                animateItems ? "rotate-0" : "rotate-180"
-              )}
-            >
-              <X className="w-7 h-7 text-primary-foreground" strokeWidth={2.5} />
-            </button>
-          </div>
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className={cn(
+              "relative w-14 h-14 rounded-full gradient-primary shadow-xl",
+              "flex items-center justify-center transition-all duration-300",
+              "hover:scale-105 active:scale-95",
+              animateItems ? "rotate-0" : "rotate-180"
+            )}
+          >
+            <X className="w-6 h-6 text-primary-foreground" strokeWidth={2.5} />
+          </button>
         </div>
-      </div>
-      
-      {/* Hint text */}
-      <div className={cn(
-        "absolute bottom-28 left-0 right-0 text-center transition-all duration-500",
-        animateItems ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-      )}>
-        <p className="text-xs text-muted-foreground">Chọn để thêm nhanh</p>
       </div>
     </div>
   );
