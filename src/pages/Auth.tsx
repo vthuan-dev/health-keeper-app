@@ -87,245 +87,253 @@ export default function Auth() {
     <div className="min-h-screen bg-background flex flex-col max-w-md mx-auto">
       {/* Header with Logo */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
-        <AppLogo size="lg" className="mb-6" />
-        <p className="text-sm text-muted-foreground text-center mb-6">
+        <AppLogo size="lg" className="mb-4" />
+        <p className="text-sm text-muted-foreground text-center mb-8">
           Quản lý sức khỏe thông minh mỗi ngày
         </p>
 
-        <Card className="w-full">
-          <CardContent className="p-4">
-            <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4">
-                <TabsTrigger value="login" className="text-sm">Đăng nhập</TabsTrigger>
-                <TabsTrigger value="register" className="text-sm">Đăng ký</TabsTrigger>
-              </TabsList>
+        <div className="w-full space-y-4">
+          <Tabs defaultValue="login" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6 h-12 bg-muted/50 p-1 rounded-full">
+              <TabsTrigger 
+                value="login" 
+                className="text-sm rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                Đăng nhập
+              </TabsTrigger>
+              <TabsTrigger 
+                value="register" 
+                className="text-sm rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm"
+              >
+                Đăng ký
+              </TabsTrigger>
+            </TabsList>
 
-              {/* Login Tab */}
-              <TabsContent value="login" className="mt-0">
-                <Form {...loginForm}>
-                  <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-3">
-                    <FormField
-                      control={loginForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Email</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input 
-                                placeholder="email@example.com" 
-                                className="pl-9 h-10 text-sm" 
-                                {...field} 
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={loginForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Mật khẩu</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="••••••••"
-                                className="pl-9 pr-9 h-10 text-sm"
-                                {...field}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                              >
-                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                              </button>
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="flex justify-end">
-                      <Button
-                        type="button"
-                        variant="link"
-                        className="text-xs text-primary p-0 h-auto"
-                        onClick={() => navigate("/forgot-password")}
-                      >
-                        Quên mật khẩu?
-                      </Button>
-                    </div>
-
-                    <Button 
-                      type="submit" 
-                      className="w-full h-10 gradient-primary gap-2"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Đang xử lý..." : "Đăng nhập"}
-                      {!isLoading && <ArrowRight className="w-4 h-4" />}
-                    </Button>
-                  </form>
-                </Form>
-              </TabsContent>
-
-              {/* Register Tab */}
-              <TabsContent value="register" className="mt-0">
-                <Form {...registerForm}>
-                  <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-3">
-                    <FormField
-                      control={registerForm.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Họ và tên</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input 
-                                placeholder="Nguyễn Văn A" 
-                                className="pl-9 h-10 text-sm" 
-                                {...field} 
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={registerForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Email</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input 
-                                placeholder="email@example.com" 
-                                className="pl-9 h-10 text-sm" 
-                                {...field} 
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={registerForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Mật khẩu</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="••••••••"
-                                className="pl-9 pr-9 h-10 text-sm"
-                                {...field}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                              >
-                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                              </button>
-                            </div>
-                          </FormControl>
-                          <PasswordStrength password={field.value} />
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={registerForm.control}
-                      name="confirmPassword"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Xác nhận mật khẩu</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input
-                                type={showConfirmPassword ? "text" : "password"}
-                                placeholder="••••••••"
-                                className="pl-9 pr-9 h-10 text-sm"
-                                {...field}
-                              />
-                              <button
-                                type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                              >
-                                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                              </button>
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={registerForm.control}
-                      name="agreeTerms"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              className="mt-0.5"
+            {/* Login Tab */}
+            <TabsContent value="login" className="mt-0 space-y-4">
+              <Form {...loginForm}>
+                <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
+                  <FormField
+                    control={loginForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Email</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input 
+                              placeholder="email@example.com" 
+                              className="pl-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl" 
+                              {...field} 
                             />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel className="text-[11px] text-muted-foreground font-normal">
-                              Tôi đồng ý với{" "}
-                              <span className="text-primary underline">Điều khoản sử dụng</span>
-                              {" "}và{" "}
-                              <span className="text-primary underline">Chính sách bảo mật</span>
-                            </FormLabel>
-                            <FormMessage className="text-[10px]" />
                           </div>
-                        </FormItem>
-                      )}
-                    />
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
 
-                    <Button 
-                      type="submit" 
-                      className="w-full h-10 gradient-primary gap-2"
-                      disabled={isLoading}
+                  <FormField
+                    control={loginForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Mật khẩu</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              className="pl-11 pr-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl"
+                              {...field}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="flex justify-end">
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="text-sm text-primary p-0 h-auto font-medium"
+                      onClick={() => navigate("/forgot-password")}
                     >
-                      {isLoading ? "Đang xử lý..." : "Đăng ký"}
-                      {!isLoading && <ArrowRight className="w-4 h-4" />}
+                      Quên mật khẩu?
                     </Button>
-                  </form>
-                </Form>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 gradient-primary gap-2 rounded-xl text-base font-semibold shadow-health"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Đang xử lý..." : "Đăng nhập"}
+                    {!isLoading && <ArrowRight className="w-5 h-5" />}
+                  </Button>
+                </form>
+              </Form>
+            </TabsContent>
+
+            {/* Register Tab */}
+            <TabsContent value="register" className="mt-0 space-y-4">
+              <Form {...registerForm}>
+                <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
+                  <FormField
+                    control={registerForm.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Họ và tên</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input 
+                              placeholder="Nguyễn Văn A" 
+                              className="pl-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl" 
+                              {...field} 
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={registerForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Email</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input 
+                              placeholder="email@example.com" 
+                              className="pl-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl" 
+                              {...field} 
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={registerForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Mật khẩu</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              className="pl-11 pr-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl"
+                              {...field}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <PasswordStrength password={field.value} />
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={registerForm.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Xác nhận mật khẩu</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input
+                              type={showConfirmPassword ? "text" : "password"}
+                              placeholder="••••••••"
+                              className="pl-11 pr-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl"
+                              {...field}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={registerForm.control}
+                    name="agreeTerms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 py-2">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="mt-0.5 rounded-full"
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm text-muted-foreground font-normal leading-relaxed">
+                            Tôi đồng ý với{" "}
+                            <span className="text-primary underline cursor-pointer">Điều khoản sử dụng</span>
+                            {" "}và{" "}
+                            <span className="text-primary underline cursor-pointer">Chính sách bảo mật</span>
+                          </FormLabel>
+                          <FormMessage className="text-xs" />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button 
+                    type="submit" 
+                    className="w-full h-12 gradient-primary gap-2 rounded-xl text-base font-semibold shadow-health"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Đang xử lý..." : "Đăng ký"}
+                    {!isLoading && <ArrowRight className="w-5 h-5" />}
+                  </Button>
+                </form>
+              </Form>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 text-center">
-        <p className="text-[10px] text-muted-foreground">
+      <div className="px-6 py-6 text-center">
+        <p className="text-xs text-muted-foreground">
           © 2024 HealthCare. Bảo mật dữ liệu sức khỏe của bạn.
         </p>
       </div>

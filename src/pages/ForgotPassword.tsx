@@ -44,78 +44,87 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen bg-background flex flex-col max-w-md mx-auto">
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
-        <AppLogo size="md" className="mb-6" />
+        <AppLogo size="lg" className="mb-4" />
+        <p className="text-sm text-muted-foreground text-center mb-8">
+          Quản lý sức khỏe thông minh mỗi ngày
+        </p>
 
-        <Card className="w-full">
-          <CardContent className="p-4">
-            {isSuccess ? (
-              <div className="text-center py-4">
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                  <CheckCircle className="w-7 h-7 text-primary" />
-                </div>
-                <h2 className="text-lg font-semibold mb-2">Đã gửi email!</h2>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Vui lòng kiểm tra hộp thư của bạn và làm theo hướng dẫn để đặt lại mật khẩu.
-                </p>
-                <Button
-                  variant="outline"
-                  className="w-full h-10"
-                  onClick={() => navigate("/auth")}
-                >
-                  Quay lại đăng nhập
-                </Button>
+        <div className="w-full">
+          {isSuccess ? (
+            <div className="text-center py-6">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-primary" />
               </div>
-            ) : (
-              <>
-                <button
-                  onClick={() => navigate("/auth")}
-                  className="flex items-center gap-1 text-sm text-muted-foreground mb-4 hover:text-foreground"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Quay lại
-                </button>
+              <h2 className="text-xl font-semibold mb-2">Đã gửi email!</h2>
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                Vui lòng kiểm tra hộp thư của bạn và làm theo hướng dẫn để đặt lại mật khẩu.
+              </p>
+              <Button
+                variant="outline"
+                className="w-full h-12 rounded-xl"
+                onClick={() => navigate("/auth")}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Quay lại đăng nhập
+              </Button>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={() => navigate("/auth")}
+                className="flex items-center gap-2 text-sm text-muted-foreground mb-6 hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Quay lại
+              </button>
 
-                <h2 className="text-lg font-semibold mb-1">Quên mật khẩu?</h2>
-                <p className="text-xs text-muted-foreground mb-4">
-                  Nhập email của bạn để nhận link đặt lại mật khẩu
-                </p>
+              <h2 className="text-xl font-semibold mb-2">Quên mật khẩu?</h2>
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                Nhập email của bạn để nhận link đặt lại mật khẩu
+              </p>
 
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-xs">Email</FormLabel>
-                          <FormControl>
-                            <div className="relative">
-                              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                              <Input
-                                placeholder="email@example.com"
-                                className="pl-9 h-10 text-sm"
-                                {...field}
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage className="text-[10px]" />
-                        </FormItem>
-                      )}
-                    />
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-medium">Email</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <Input
+                              placeholder="email@example.com"
+                              className="pl-11 h-12 text-sm bg-muted/30 border-muted-foreground/20 rounded-xl"
+                              {...field}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
 
-                    <Button
-                      type="submit"
-                      className="w-full h-10 gradient-primary"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Đang gửi..." : "Gửi link đặt lại"}
-                    </Button>
-                  </form>
-                </Form>
-              </>
-            )}
-          </CardContent>
-        </Card>
+                  <Button
+                    type="submit"
+                    className="w-full h-12 gradient-primary rounded-xl text-base font-semibold shadow-health"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Đang gửi..." : "Gửi link đặt lại"}
+                  </Button>
+                </form>
+              </Form>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="px-6 py-6 text-center">
+        <p className="text-xs text-muted-foreground">
+          © 2024 HealthCare. Bảo mật dữ liệu sức khỏe của bạn.
+        </p>
       </div>
     </div>
   );
