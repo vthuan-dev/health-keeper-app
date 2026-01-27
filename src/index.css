@@ -65,49 +65,58 @@
   }
 
   .dark {
-    --background: 140 30% 8%;
-    --foreground: 140 15% 95%;
+    /* Softer dark background - easier on eyes */
+    --background: 160 15% 12%;
+    --foreground: 0 0% 98%;
 
-    --card: 140 25% 12%;
-    --card-foreground: 140 15% 95%;
+    /* Card with subtle green tint */
+    --card: 160 12% 16%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 140 25% 12%;
-    --popover-foreground: 140 15% 95%;
+    --popover: 160 12% 16%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 122 39% 55%;
-    --primary-foreground: 140 30% 8%;
+    /* Vibrant but soft primary green */
+    --primary: 142 50% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 140 25% 18%;
-    --secondary-foreground: 140 15% 95%;
+    /* Subtle secondary */
+    --secondary: 160 15% 22%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 140 25% 18%;
-    --muted-foreground: 140 15% 60%;
+    /* Muted tones */
+    --muted: 160 10% 20%;
+    --muted-foreground: 160 10% 65%;
 
-    --accent: 140 25% 18%;
-    --accent-foreground: 140 15% 95%;
+    /* Accent with green hint */
+    --accent: 160 15% 22%;
+    --accent-foreground: 0 0% 95%;
 
-    --destructive: 0 62% 50%;
+    /* Keep destructive visible */
+    --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 140 25% 20%;
-    --input: 140 25% 20%;
-    --ring: 122 39% 55%;
+    /* Softer borders */
+    --border: 160 10% 25%;
+    --input: 160 10% 25%;
+    --ring: 142 50% 50%;
 
-    /* Dark mode health colors */
-    --health-primary: 122 39% 55%;
-    --health-primary-light: 123 38% 70%;
-    --health-primary-dark: 123 43% 40%;
-    --health-accent: 123 43% 62%;
-    --health-background: 140 30% 8%;
+    /* Dark mode health colors - brighter greens */
+    --health-primary: 142 50% 50%;
+    --health-primary-light: 142 45% 60%;
+    --health-primary-dark: 142 50% 40%;
+    --health-accent: 142 45% 55%;
+    --health-background: 160 15% 12%;
 
-    --sidebar-background: 140 25% 10%;
-    --sidebar-foreground: 140 15% 95%;
-    --sidebar-primary: 122 39% 55%;
-    --sidebar-primary-foreground: 140 30% 8%;
-    --sidebar-accent: 140 25% 18%;
-    --sidebar-accent-foreground: 140 15% 95%;
-    --sidebar-border: 140 25% 20%;
-    --sidebar-ring: 122 39% 55%;
+    /* Sidebar styling */
+    --sidebar-background: 160 12% 14%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 142 50% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 15% 22%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 160 10% 25%;
+    --sidebar-ring: 142 50% 50%;
   }
 }
 
