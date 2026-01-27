@@ -39,15 +39,15 @@ export function StatsCard({
 
   return (
     <Card className={cn("border shadow-sm", variantStyles[variant], className)}>
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between">
-          <div className={cn("p-2 rounded-lg", iconStyles[variant])}>
-            <Icon className="w-5 h-5" />
+      <CardContent className="p-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className={cn("p-1.5 rounded-lg", iconStyles[variant])}>
+            <Icon className="w-4 h-4" />
           </div>
           {trend && trendValue && (
             <span
               className={cn(
-                "text-xs font-medium px-2 py-0.5 rounded-full",
+                "text-[10px] font-medium px-1.5 py-0.5 rounded-full",
                 trend === "up" && "bg-health-success/10 text-health-success",
                 trend === "down" && "bg-destructive/10 text-destructive",
                 trend === "neutral" && "bg-muted text-muted-foreground"
@@ -60,16 +60,14 @@ export function StatsCard({
           )}
         </div>
 
-        <div className="mt-3">
-          <p className="text-xs text-muted-foreground uppercase tracking-wide">{label}</p>
-          <div className="flex items-baseline gap-1 mt-1">
-            <span className="text-2xl font-bold text-foreground">{value}</span>
-            {unit && <span className="text-sm text-muted-foreground">{unit}</span>}
-          </div>
-          {subtitle && (
-            <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
-          )}
+        <p className="text-[10px] text-muted-foreground uppercase tracking-wide mb-0.5">{label}</p>
+        <div className="flex items-baseline gap-0.5">
+          <span className="text-xl font-bold text-foreground">{value}</span>
+          {unit && <span className="text-xs text-muted-foreground">{unit}</span>}
         </div>
+        {subtitle && (
+          <p className="text-[10px] text-muted-foreground mt-0.5">{subtitle}</p>
+        )}
       </CardContent>
     </Card>
   );

@@ -14,14 +14,12 @@ export default function Dashboard() {
         <DashboardHeader userName="Nguyễn Văn A" />
 
         {/* AI Daily Plan Card */}
-        <div className="mt-2">
-          <DailyPlanCard />
-        </div>
+        <DailyPlanCard />
 
         {/* Quick Stats */}
-        <div className="px-4 mt-6">
-          <h2 className="text-sm font-semibold text-foreground mb-3">Chỉ số hôm nay</h2>
-          <div className="grid grid-cols-3 gap-3">
+        <div className="px-4 mt-4">
+          <h2 className="text-sm font-semibold text-foreground mb-2">Chỉ số hôm nay</h2>
+          <div className="grid grid-cols-3 gap-2">
             <StatsCard
               icon={Scale}
               label="Cân nặng"
@@ -50,12 +48,12 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-6">
+        <div className="mt-4">
           <QuickActions />
         </div>
 
         {/* Today's Reminders */}
-        <div className="mt-6">
+        <div className="mt-4">
           <TodayReminders />
         </div>
       </div>
