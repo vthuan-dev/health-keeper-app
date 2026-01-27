@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft } from "lucide-react";
 import { 
-  IconScale,
-  IconHeartbeat,
-  IconActivityHeartbeat,
-  IconDroplet,
-  IconToolsKitchen2,
-  IconBarbell,
-  IconPill,
-  IconCalendarHeart,
+  IconWeight,
+  IconHeartRateMonitor,
+  IconWaveSine,
+  IconDropletFilled,
+  IconSoup,
+  IconRun,
+  IconPillFilled,
+  IconStethoscope,
   TablerIcon
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,7 @@ import { allMenuItems, saveSelectedMenuItems, QuickMenuItem } from "@/components
 import { toast } from "@/hooks/use-toast";
 
 const iconMap: Record<string, TablerIcon> = {
-  IconScale, IconHeartbeat, IconActivityHeartbeat, IconDroplet, IconToolsKitchen2, IconBarbell, IconPill, IconCalendarHeart
+  IconWeight, IconHeartRateMonitor, IconWaveSine, IconDropletFilled, IconSoup, IconRun, IconPillFilled, IconStethoscope
 };
 
 export default function QuickMenuSettings() {
