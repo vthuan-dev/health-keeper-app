@@ -17,8 +17,8 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
     const timers = [
       setTimeout(() => setStage(1), 100),
       setTimeout(() => setStage(2), 600),
-      setTimeout(() => setStage(3), 2000),
-      setTimeout(() => onComplete(), 2500),
+      setTimeout(() => setStage(3), 2500),
+      setTimeout(() => onComplete(), 3000),
     ];
 
     return () => timers.forEach(clearTimeout);
