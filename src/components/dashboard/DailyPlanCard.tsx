@@ -1,4 +1,4 @@
-import { Sparkles, ChevronRight, Target, Droplets, Flame } from "lucide-react";
+import { ChevronRight, Target, Droplets, Flame, CalendarCheck } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -15,10 +15,10 @@ export function DailyPlanCard() {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-                <Sparkles className="w-4 h-4 text-white" />
+                <CalendarCheck className="w-4 h-4 text-white" />
               </div>
               <span className="text-sm font-semibold text-white/90">
-                Kế hoạch AI hôm nay
+                Kế hoạch hôm nay
               </span>
             </div>
             <Button

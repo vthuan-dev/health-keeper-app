@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, User, Sparkles, Stethoscope, Heart, Apple, Dumbbell, Moon, History, Plus } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Stethoscope, Heart, Apple, Dumbbell, Moon, History, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -233,9 +233,6 @@ export function AIChatbot() {
         aria-label="Mở chatbot bác sĩ AI"
       >
         <Stethoscope className="w-6 h-6 text-primary-foreground relative z-10 group-hover:rotate-12 transition-transform" />
-        <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-health-accent to-primary rounded-full flex items-center justify-center shadow-lg border-2 border-background">
-          <Sparkles className="w-2.5 h-2.5 text-primary-foreground" />
-        </span>
       </button>
 
       {/* Chat Panel */}
@@ -278,8 +275,7 @@ export function AIChatbot() {
                         Online
                       </span>
                     </div>
-                    <p className="text-xs text-primary-foreground/80 flex items-center gap-1">
-                      <Sparkles className="w-3 h-3" />
+                    <p className="text-xs text-primary-foreground/80">
                       Tư vấn sức khỏe thông minh 24/7
                     </p>
                   </div>
@@ -384,8 +380,7 @@ export function AIChatbot() {
               {/* Quick Actions - Show only after first message */}
               {messages.length === 1 && !isTyping && (
                 <div className="pt-2 animate-fade-in">
-                  <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
+                  <p className="text-xs text-muted-foreground mb-3">
                     Gợi ý nhanh
                   </p>
                   <div className="grid grid-cols-2 gap-2">
