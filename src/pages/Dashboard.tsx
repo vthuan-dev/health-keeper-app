@@ -9,6 +9,7 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { TodayReminders } from "@/components/dashboard/TodayReminders";
 import { PullToRefresh } from "@/components/common/PullToRefresh";
 import { toast } from "@/hooks/use-toast";
+import { AnimatedContainer } from "@/components/common/AnimatedContainer";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -33,49 +34,65 @@ export default function Dashboard() {
   return (
     <AppLayout>
       <PullToRefresh onRefresh={handleRefresh} className="h-full">
-        <div className="animate-fade-in space-y-5 pb-4">
+        <div className="space-y-5 pb-4">
           {/* Header */}
-          <DashboardHeader userName="Nguyễn Văn A" />
+          <AnimatedContainer delay={0}>
+            <DashboardHeader userName="Nguyễn Văn A" />
+          </AnimatedContainer>
 
           {/* AI Daily Plan Card */}
-          <DailyPlanCard />
+          <AnimatedContainer delay={100} animation="slide-left">
+            <DailyPlanCard />
+          </AnimatedContainer>
 
           {/* Quick Stats */}
           <div className="px-4">
-            <h2 className="text-base font-bold text-foreground mb-3">Chỉ số hôm nay</h2>
+            <AnimatedContainer delay={200}>
+              <h2 className="text-base font-bold text-foreground mb-3">Chỉ số hôm nay</h2>
+            </AnimatedContainer>
             <div className="grid grid-cols-3 gap-3">
-              <StatsCard
-                icon={Scale}
-                label="Cân nặng"
-                value={stats.weight}
-                unit="kg"
-                subtitle="BMI: 22.4"
-                variant="primary"
-              />
-              <CircularProgressCard
-                icon={Footprints}
-                label="Bước chân"
-                value={stats.steps}
-                target={10000}
-                unit="bước"
-                variant="info"
-              />
-              <CircularProgressCard
-                icon={Flame}
-                label="Calo"
-                value={stats.calories}
-                target={1800}
-                unit="kcal"
-                variant="accent"
-              />
+              <AnimatedContainer delay={250} animation="scale">
+                <StatsCard
+                  icon={Scale}
+                  label="Cân nặng"
+                  value={stats.weight}
+                  unit="kg"
+                  subtitle="BMI: 22.4"
+                  variant="primary"
+                />
+              </AnimatedContainer>
+              <AnimatedContainer delay={300} animation="scale">
+                <CircularProgressCard
+                  icon={Footprints}
+                  label="Bước chân"
+                  value={stats.steps}
+                  target={10000}
+                  unit="bước"
+                  variant="info"
+                />
+              </AnimatedContainer>
+              <AnimatedContainer delay={350} animation="scale">
+                <CircularProgressCard
+                  icon={Flame}
+                  label="Calo"
+                  value={stats.calories}
+                  target={1800}
+                  unit="kcal"
+                  variant="accent"
+                />
+              </AnimatedContainer>
             </div>
           </div>
 
           {/* Quick Actions */}
-          <QuickActions />
+          <AnimatedContainer delay={400}>
+            <QuickActions />
+          </AnimatedContainer>
 
           {/* Today's Reminders */}
-          <TodayReminders />
+          <AnimatedContainer delay={500} animation="fade-up">
+            <TodayReminders />
+          </AnimatedContainer>
         </div>
       </PullToRefresh>
     </AppLayout>
