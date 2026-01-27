@@ -41,6 +41,7 @@ export function DashboardHeader({ userName = "Nguyễn Văn A", avatarUrl }: Das
           variant="ghost" 
           size="icon" 
           className="relative w-10 h-10 rounded-full hover:bg-primary/10"
+          onClick={() => navigate("/notifications")}
         >
           <Bell className="w-5 h-5 text-muted-foreground" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full animate-pulse" />
