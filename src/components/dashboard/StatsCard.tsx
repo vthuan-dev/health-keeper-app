@@ -75,44 +75,27 @@ export function StatsCard({
   return (
     <div 
       className={cn(
-        "relative p-4 rounded-3xl transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+        "relative p-4 rounded-3xl transition-all duration-300 hover:scale-[1.02] cursor-pointer flex flex-col items-center text-center h-full min-h-[180px]",
         styles.card,
         className
       )}
     >
-      {/* Icon Circle */}
-      <div className="flex items-center justify-between mb-3">
-        <div className={cn(
-          "w-10 h-10 rounded-full flex items-center justify-center shadow-lg ring-4",
-          styles.iconBg,
-          styles.ring
-        )}>
-          <Icon className={cn("w-5 h-5", styles.iconColor)} />
-        </div>
-        
-        {trend && trendValue && (
-          <span
-            className={cn(
-              "text-[10px] font-bold px-2 py-1 rounded-full",
-              trend === "up" && "bg-primary/20 text-primary",
-              trend === "down" && "bg-destructive/20 text-destructive",
-              trend === "neutral" && "bg-muted text-muted-foreground"
-            )}
-          >
-            {trend === "up" && "↑"}
-            {trend === "down" && "↓"}
-            {trendValue}
-          </span>
-        )}
+      {/* Icon Circle - Centered */}
+      <div className={cn(
+        "w-12 h-12 rounded-full flex items-center justify-center shadow-lg ring-4 mb-3",
+        styles.iconBg,
+        styles.ring
+      )}>
+        <Icon className={cn("w-6 h-6", styles.iconColor)} />
       </div>
 
       {/* Label */}
-      <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold mb-2">
         {label}
       </p>
 
       {/* Value */}
-      <div className="flex items-baseline gap-1">
+      <div className="flex items-baseline justify-center gap-1">
         <span className="text-2xl font-black text-foreground tracking-tight tabular-nums">
           {formattedValue}
         </span>
@@ -126,6 +109,22 @@ export function StatsCard({
         <p className="text-xs text-muted-foreground mt-1 font-medium opacity-80">
           {subtitle}
         </p>
+      )}
+
+      {/* Trend badge */}
+      {trend && trendValue && (
+        <span
+          className={cn(
+            "text-[10px] font-bold px-2 py-1 rounded-full mt-2",
+            trend === "up" && "bg-primary/20 text-primary",
+            trend === "down" && "bg-destructive/20 text-destructive",
+            trend === "neutral" && "bg-muted text-muted-foreground"
+          )}
+        >
+          {trend === "up" && "↑"}
+          {trend === "down" && "↓"}
+          {trendValue}
+        </span>
       )}
     </div>
   );

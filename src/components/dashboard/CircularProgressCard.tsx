@@ -113,7 +113,7 @@ export function CircularProgressCard({
     <div 
       ref={cardRef}
       className={cn(
-        "relative p-4 rounded-3xl transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+        "relative p-4 rounded-3xl transition-all duration-300 hover:scale-[1.02] cursor-pointer flex flex-col items-center h-full min-h-[180px]",
         styles.card,
         isCompleted && "ring-2 ring-primary/50 shadow-lg",
         className
@@ -122,49 +122,47 @@ export function CircularProgressCard({
       {/* Completed badge */}
       {isCompleted && (
         <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md animate-bounce">
-          ✓ Hoàn thành!
+          ✓
         </div>
       )}
 
       {/* Circular Progress */}
-      <div className="flex justify-center mb-2">
-        <div className="relative w-20 h-20">
-          <svg className="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
-            {/* Background track */}
-            <circle
-              cx="40"
-              cy="40"
-              r="36"
-              fill="none"
-              strokeWidth="6"
-              className={styles.trackStroke}
-            />
-            {/* Progress arc */}
-            <circle
-              cx="40"
-              cy="40"
-              r="36"
-              fill="none"
-              strokeWidth="6"
-              strokeLinecap="round"
-              className={cn(
-                styles.stroke, 
-                "transition-all duration-1000 ease-out",
-                isCompleted && "drop-shadow-[0_0_6px_rgba(76,175,80,0.6)]"
-              )}
-              style={{
-                strokeDasharray: circumference,
-                strokeDashoffset: strokeDashoffset,
-              }}
-            />
-          </svg>
-          {/* Center icon */}
-          <div className={cn(
-            "absolute inset-0 flex items-center justify-center transition-transform duration-300",
-            isCompleted && "scale-110"
-          )}>
-            <Icon className={cn("w-6 h-6", styles.textColor)} />
-          </div>
+      <div className="relative w-16 h-16 mb-2">
+        <svg className="w-16 h-16 -rotate-90" viewBox="0 0 80 80">
+          {/* Background track */}
+          <circle
+            cx="40"
+            cy="40"
+            r="36"
+            fill="none"
+            strokeWidth="6"
+            className={styles.trackStroke}
+          />
+          {/* Progress arc */}
+          <circle
+            cx="40"
+            cy="40"
+            r="36"
+            fill="none"
+            strokeWidth="6"
+            strokeLinecap="round"
+            className={cn(
+              styles.stroke, 
+              "transition-all duration-1000 ease-out",
+              isCompleted && "drop-shadow-[0_0_6px_rgba(76,175,80,0.6)]"
+            )}
+            style={{
+              strokeDasharray: circumference,
+              strokeDashoffset: strokeDashoffset,
+            }}
+          />
+        </svg>
+        {/* Center icon */}
+        <div className={cn(
+          "absolute inset-0 flex items-center justify-center transition-transform duration-300",
+          isCompleted && "scale-110"
+        )}>
+          <Icon className={cn("w-5 h-5", styles.textColor)} />
         </div>
       </div>
 
@@ -174,11 +172,11 @@ export function CircularProgressCard({
       </p>
 
       {/* Value */}
-      <div className="flex items-baseline justify-center gap-1">
-        <span className="text-xl font-black text-foreground tracking-tight tabular-nums">
+      <div className="flex items-baseline justify-center gap-0.5">
+        <span className={cn("text-lg font-black tracking-tight tabular-nums", styles.textColor)}>
           {Number(animatedValue).toLocaleString()}
         </span>
-        <span className="text-xs text-muted-foreground font-medium">
+        <span className="text-[10px] text-muted-foreground font-medium">
           / {target.toLocaleString()} {unit}
         </span>
       </div>
