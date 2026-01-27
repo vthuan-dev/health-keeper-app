@@ -3,6 +3,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { DailyPlanCard } from "@/components/dashboard/DailyPlanCard";
 import { StatsCard } from "@/components/dashboard/StatsCard";
+import { CircularProgressCard } from "@/components/dashboard/CircularProgressCard";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { TodayReminders } from "@/components/dashboard/TodayReminders";
 
@@ -36,11 +37,12 @@ export default function Dashboard() {
               trendValue="12%"
               variant="info"
             />
-            <StatsCard
+            <CircularProgressCard
               icon={Flame}
               label="Calo"
-              value="1,250"
-              subtitle="/ 1,800 kcal"
+              value={1250}
+              target={1800}
+              unit="kcal"
               variant="accent"
             />
           </div>
