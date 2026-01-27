@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import AddEntry from "./pages/AddEntry";
 import Auth from "./pages/Auth";
 import ForgotPassword from "./pages/ForgotPassword";
+import HealthMetrics from "./pages/HealthMetrics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/add" element={<AddEntry />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/health-metrics" element={<HealthMetrics />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
