@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Bot, User, Sparkles, Stethoscope, Heart, Apple, Dumbbell, Moon } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Sparkles, Stethoscope, Heart, Apple, Dumbbell, Moon, History, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { ChatHistory, ChatSession } from "./ChatHistory";
 
 interface Message {
   id: string;
@@ -32,8 +33,51 @@ const INITIAL_MESSAGE: Message = {
   timestamp: new Date(),
 };
 
+const STORAGE_KEY = "ai-doctor-chat-history";
+
+const loadSessions = (): ChatSession[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (data) {
+      const sessions = JSON.parse(data);
+      return sessions.map((s: ChatSession) => ({
+        ...s,
+        createdAt: new Date(s.createdAt),
+        updatedAt: new Date(s.updatedAt),
+        messages: s.messages.map((m) => ({
+          ...m,
+          timestamp: new Date(m.timestamp),
+        })),
+      }));
+    }
+  } catch (e) {
+    console.error("Failed to load chat history:", e);
+  }
+  return [];
+};
+
+const saveSessions = (sessions: ChatSession[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  } catch (e) {
+    console.error("Failed to save chat history:", e);
+  }
+};
+
+const generateTitle = (messages: Message[]): string => {
+  const firstUserMessage = messages.find((m) => m.role === "user");
+  if (firstUserMessage) {
+    const title = firstUserMessage.content.slice(0, 40);
+    return title.length < firstUserMessage.content.length ? `${title}...` : title;
+  }
+  return "Cuộc trò chuyện mới";
+};
+
 export function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [sessions, setSessions] = useState<ChatSession[]>(() => loadSessions());
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -47,13 +91,81 @@ export function AIChatbot() {
   }, [messages, isTyping]);
 
   useEffect(() => {
-    if (isOpen && inputRef.current) {
+    if (isOpen && inputRef.current && !showHistory) {
       setTimeout(() => inputRef.current?.focus(), 300);
     }
-  }, [isOpen]);
+  }, [isOpen, showHistory]);
+
+  // Save current session when messages change
+  useEffect(() => {
+    if (messages.length > 1 && currentSessionId) {
+      setSessions((prev) => {
+        const updated = prev.map((s) =>
+          s.id === currentSessionId
+            ? { ...s, messages, title: generateTitle(messages), updatedAt: new Date() }
+            : s
+        );
+        saveSessions(updated);
+        return updated;
+      });
+    }
+  }, [messages, currentSessionId]);
+
+  const startNewChat = () => {
+    const newSession: ChatSession = {
+      id: Date.now().toString(),
+      title: "Cuộc trò chuyện mới",
+      messages: [INITIAL_MESSAGE],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    setSessions((prev) => {
+      const updated = [newSession, ...prev];
+      saveSessions(updated);
+      return updated;
+    });
+    setCurrentSessionId(newSession.id);
+    setMessages([INITIAL_MESSAGE]);
+    setShowHistory(false);
+  };
+
+  const selectSession = (session: ChatSession) => {
+    setCurrentSessionId(session.id);
+    setMessages(session.messages);
+    setShowHistory(false);
+  };
+
+  const deleteSession = (sessionId: string) => {
+    setSessions((prev) => {
+      const updated = prev.filter((s) => s.id !== sessionId);
+      saveSessions(updated);
+      return updated;
+    });
+    if (currentSessionId === sessionId) {
+      setCurrentSessionId(null);
+      setMessages([INITIAL_MESSAGE]);
+    }
+  };
 
   const sendMessage = async (text: string) => {
     if (!text.trim()) return;
+
+    // Auto-create session if none exists
+    if (!currentSessionId) {
+      const newSession: ChatSession = {
+        id: Date.now().toString(),
+        title: "Cuộc trò chuyện mới",
+        messages: [INITIAL_MESSAGE],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      setSessions((prev) => {
+        const updated = [newSession, ...prev];
+        saveSessions(updated);
+        return updated;
+      });
+      setCurrentSessionId(newSession.id);
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -135,40 +247,70 @@ export function AIChatbot() {
         )}
       >
         <div className="bg-card border border-border/50 rounded-t-[28px] shadow-2xl overflow-hidden flex flex-col h-[75vh]">
-          {/* Header */}
-          <div className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-health-accent opacity-95" />
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoLTR2LTJoNHYtNGgydjRoNHYyaC00djR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
-            
-            <div className="relative px-5 py-4 flex items-center gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 rounded-2xl bg-background/20 backdrop-blur-sm flex items-center justify-center border border-primary-foreground/20 shadow-lg">
-                  <Bot className="w-6 h-6 text-primary-foreground" />
+          {/* Show History View or Chat View */}
+          {showHistory ? (
+            <ChatHistory
+              sessions={sessions}
+              currentSessionId={currentSessionId}
+              onSelectSession={selectSession}
+              onNewChat={startNewChat}
+              onDeleteSession={deleteSession}
+              onBack={() => setShowHistory(false)}
+            />
+          ) : (
+            <>
+              {/* Header */}
+              <div className="relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-health-accent opacity-95" />
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoLTR2LTJoNHYtNGgydjRoNHYyaC00djR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+                
+                <div className="relative px-5 py-4 flex items-center gap-4">
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-2xl bg-background/20 backdrop-blur-sm flex items-center justify-center border border-primary-foreground/20 shadow-lg">
+                      <Bot className="w-6 h-6 text-primary-foreground" />
+                    </div>
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 border-2 border-primary rounded-full shadow-sm" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold text-primary-foreground text-base">Bác sĩ AI</h3>
+                      <span className="px-2 py-0.5 bg-primary-foreground/20 rounded-full text-[10px] font-medium text-primary-foreground">
+                        Online
+                      </span>
+                    </div>
+                    <p className="text-xs text-primary-foreground/80 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" />
+                      Tư vấn sức khỏe thông minh 24/7
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-primary-foreground hover:bg-primary-foreground/20 rounded-xl h-10 w-10"
+                      onClick={() => setShowHistory(true)}
+                    >
+                      <History className="w-5 h-5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-primary-foreground hover:bg-primary-foreground/20 rounded-xl h-10 w-10"
+                      onClick={startNewChat}
+                    >
+                      <Plus className="w-5 h-5" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-primary-foreground hover:bg-primary-foreground/20 rounded-xl h-10 w-10"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <X className="w-5 h-5" />
+                    </Button>
+                  </div>
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 border-2 border-primary rounded-full shadow-sm" />
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-primary-foreground text-base">Bác sĩ AI</h3>
-                  <span className="px-2 py-0.5 bg-primary-foreground/20 rounded-full text-[10px] font-medium text-primary-foreground">
-                    Online
-                  </span>
-                </div>
-                <p className="text-xs text-primary-foreground/80 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  Tư vấn sức khỏe thông minh 24/7
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-primary-foreground hover:bg-primary-foreground/20 rounded-xl h-10 w-10"
-                onClick={() => setIsOpen(false)}
-              >
-                <X className="w-5 h-5" />
-              </Button>
-            </div>
-          </div>
 
           {/* Messages */}
           <ScrollArea ref={scrollRef} className="flex-1 px-4 py-4">
@@ -297,6 +439,8 @@ export function AIChatbot() {
               </p>
             </div>
           </div>
+            </>
+          )}
         </div>
       </div>
 
