@@ -4,24 +4,24 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ArrowLeft } from "lucide-react";
 import { 
-  ArrowLeft, 
-  Weight, 
-  HeartPulse, 
-  ActivitySquare, 
-  Droplet, 
-  UtensilsCrossed, 
-  Dumbbell, 
-  PillBottle, 
-  CalendarHeart,
-  LucideIcon 
-} from "lucide-react";
+  IconScale,
+  IconHeartbeat,
+  IconActivityHeartbeat,
+  IconDroplet,
+  IconToolsKitchen2,
+  IconBarbell,
+  IconPill,
+  IconCalendarHeart,
+  TablerIcon
+} from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { allMenuItems, saveSelectedMenuItems, QuickMenuItem } from "@/components/layout/RadialMenu";
 import { toast } from "@/hooks/use-toast";
 
-const iconMap: Record<string, LucideIcon> = {
-  Weight, HeartPulse, ActivitySquare, Droplet, UtensilsCrossed, Dumbbell, PillBottle, CalendarHeart
+const iconMap: Record<string, TablerIcon> = {
+  IconScale, IconHeartbeat, IconActivityHeartbeat, IconDroplet, IconToolsKitchen2, IconBarbell, IconPill, IconCalendarHeart
 };
 
 export default function QuickMenuSettings() {
