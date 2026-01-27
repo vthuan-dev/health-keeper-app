@@ -1,130 +1,113 @@
 
 
-## 🏥 Ứng dụng Quản lý Sức khỏe - Kế hoạch MVP
+## Kế hoạch: Implement trang Hồ sơ với các màn hình con
 
-Xây dựng ứng dụng quản lý sức khỏe với theme xanh lá tươi mát, tập trung vào giao diện đẹp và trải nghiệm người dùng tốt. Dữ liệu sẽ được lưu tạm trong browser (localStorage) để demo.
-
----
-
-### 📦 Giai đoạn 1: Nền tảng & Thiết kế
-
-**🎨 Thiết lập Design System**
-- Cập nhật theme màu xanh lá (#4CAF50, #81C784, #388E3C, #66BB6A)
-- Background xanh nhạt (#F1F8F4)
-- Typography và spacing theo yêu cầu
-- Components cơ bản: Buttons gradient, Cards với shadows, Input fields với icons
-
-**🧭 Navigation**
-- Bottom Navigation Bar với 5 tabs (Trang chủ, Hoạt động, Thêm +, Thống kê, Hồ sơ)
-- Nút "+" nổi ở giữa với gradient xanh
-- Hiệu ứng active/inactive cho tabs
+Xây dựng các màn hình con và chức năng tương tác cho trang Profile, giúp người dùng có thể bấm vào từng mục và xem chi tiết.
 
 ---
 
-### 📦 Giai đoạn 2: Authentication Screens
+### 1. Tạo các màn hình con
 
-**🔐 Màn Đăng nhập**
-- Logo trái tim + lá cây
-- Form đăng nhập với validation
-- Nút gradient xanh, link quên mật khẩu
+**EditProfile (Chỉnh sửa hồ sơ)**
+- Form chỉnh sửa thông tin cá nhân: Tên, Email, Số điện thoại
+- Form chỉnh sửa thông tin sức khỏe: Tuổi, Giới tính, Chiều cao, Cân nặng
+- Nút Upload/đổi avatar
+- Nút Lưu với validation
 
-**✍️ Màn Đăng ký**
-- Form đăng ký với password strength indicator
-- Checkbox điều khoản sử dụng
+**NotificationSettings (Cài đặt thông báo)**
+- Danh sách các loại thông báo có thể bật/tắt:
+  - Nhắc nhở uống thuốc
+  - Nhắc nhở tập thể dục
+  - Nhắc nhở đo chỉ số
+  - Cập nhật sức khỏe hàng tuần
+- Toggle switch cho từng loại
 
-**🔑 Màn Quên/Đặt lại mật khẩu**
-- Giao diện gửi email reset
-- Success messages
+**PrivacySettings (Quyền riêng tư)**
+- Các tùy chọn bảo mật:
+  - Ẩn thông tin sức khỏe
+  - Yêu cầu xác thực khi mở app
+  - Xóa dữ liệu cá nhân
+- Toggle và action buttons
 
----
-
-### 📦 Giai đoạn 3: Dashboard & Hồ sơ
-
-**🏠 Trang chủ (Dashboard)**
-- Header với avatar, tên user, notification bell
-- Daily Plan Card (mock AI content)
-- 3 Quick Stats cards: Cân nặng/BMI, Bước chân, Calo
-- Mini charts cho chỉ số sức khỏe
-- 4 Quick Action buttons tròn
-- Reminders Today section
-
-**👤 Màn Hồ sơ**
-- Avatar lớn với nút edit
-- Thông tin cá nhân (tuổi, giới tính, chiều cao, cân nặng, BMI)
-- Health summary stats
-- Settings list với toggles
+**HelpSupport (Trợ giúp)**
+- FAQ - Câu hỏi thường gặp (accordion)
+- Liên hệ hỗ trợ (email, điện thoại)
+- Về ứng dụng (phiên bản, thông tin)
 
 ---
 
-### 📦 Giai đoạn 4: Core Features (4 tính năng ưu tiên)
+### 2. Cập nhật Profile.tsx
 
-**📊 Theo dõi Chỉ số Sức khỏe**
-- Tabs: Cân nặng, Huyết áp, Nhịp tim, Đường huyết
-- Line charts với Recharts
-- List các bản ghi với swipe-to-delete
-- Modal thêm/sửa chỉ số
-- Empty state khi chưa có dữ liệu
-
-**🏃 Quản lý Hoạt động**
-- Daily summary với progress ring
-- List hoạt động đã ghi
-- Weekly bar chart
-- Modal thêm hoạt động (chọn loại, thời gian, calo)
-
-**🍽️ Quản lý Dinh dưỡng**
-- Circular progress calo hàng ngày
-- Phân nhóm bữa ăn (Sáng, Trưa, Tối, Snack)
-- Weekly calorie chart
-- Modal thêm bữa ăn
-
-**⏰ Nhắc nhở**
-- List reminders với toggle on/off
-- Filter theo type (thuốc, nước, tập thể dục, khám)
-- Completed today section
-- Modal tạo reminder với time picker
+- Thêm navigation handlers cho từng SettingItem
+- Thêm onClick prop cho SettingItem component
+- Xử lý đăng xuất (mock - redirect về /auth)
+- Xử lý toggle Dark Mode với next-themes (đã có sẵn)
+- Xử lý toggle Thông báo (lưu vào localStorage)
 
 ---
 
-### 📦 Giai đoạn 5: Tính năng bổ sung
+### 3. Cấu trúc files mới
 
-**📈 Thống kê**
-- Date range picker (7 ngày/30 ngày/3 tháng)
-- Overview cards với averages
-- Weight trend chart
-- Blood pressure dual-line chart
-- Activity bar chart
-
-**🤖 AI Chatbot (Mock)**
-- Chat interface với bot/user bubbles
-- Suggested questions chips
-- Typing indicator animation
-- Medical disclaimer banner
-- Mock responses có sẵn
-
-**📅 Kế hoạch hàng ngày (Mock AI)**
-- Daily plan card với AI-generated content
-- Sections: Thời gian thức, Lịch tập, Bữa ăn, Nghỉ ngơi, Lời khuyên
-- Checklist items
-- History screen
-
-**🔔 Thông báo**
-- List notifications (read/unread)
-- Type icons và badges
-
-**⚙️ Cài đặt**
-- Notification toggles
-- Unit preferences (kg/lb, cm/inch)
-- Language selector
-- Security options
+```text
+src/
+├── pages/
+│   ├── Profile.tsx (cập nhật)
+│   ├── EditProfile.tsx (mới)
+│   ├── NotificationSettings.tsx (mới)
+│   ├── PrivacySettings.tsx (mới)
+│   └── HelpSupport.tsx (mới)
+├── components/
+│   └── profile/
+│       ├── ProfileHeader.tsx (tách ra)
+│       ├── HealthStatsCard.tsx (tách ra)
+│       └── SettingsList.tsx (tách ra)
+```
 
 ---
 
-### 🎯 Kết quả MVP
+### 4. Routing mới trong App.tsx
 
-Một ứng dụng quản lý sức khỏe hoàn chỉnh về mặt giao diện với:
-- 15+ màn hình theo đúng thiết kế
-- Theme xanh lá đẹp mắt, thân thiện
-- Dữ liệu demo lưu trong localStorage
-- Sẵn sàng kết nối backend (Supabase) khi cần
-- AI responses mock có thể thay bằng OpenAI API sau
+```text
+/profile           - Trang hồ sơ chính
+/profile/edit      - Chỉnh sửa hồ sơ
+/profile/notifications - Cài đặt thông báo
+/profile/privacy   - Quyền riêng tư
+/profile/help      - Trợ giúp
+```
+
+---
+
+### 5. Chi tiết kỹ thuật
+
+**SettingItem Component**
+- Thêm `onClick` prop để xử lý navigation
+- Thêm `to` prop cho react-router navigation
+- Hover effect và active state
+
+**Dark Mode Toggle**
+- Sử dụng `next-themes` (đã cài sẵn)
+- Thêm ThemeProvider vào App.tsx
+- Toggle switch cập nhật theme realtime
+
+**Form Validation**
+- Sử dụng react-hook-form + zod (đã dùng ở Auth)
+- Validation cho email, số điện thoại
+- Validation cho chiều cao, cân nặng (số dương)
+
+**Data Storage (Mock)**
+- Lưu user profile vào localStorage
+- Load data khi component mount
+- Update data khi submit form
+
+---
+
+### 6. Kết quả
+
+Sau khi implement:
+- Bấm "Chỉnh sửa hồ sơ" -> Mở trang EditProfile
+- Bấm "Thông báo" -> Toggle ngay tại chỗ hoặc mở trang chi tiết
+- Bấm "Chế độ tối" -> Toggle dark/light mode
+- Bấm "Quyền riêng tư" -> Mở trang PrivacySettings
+- Bấm "Trợ giúp" -> Mở trang HelpSupport
+- Bấm "Đăng xuất" -> Hiển thị confirm dialog, sau đó redirect về /auth
 
