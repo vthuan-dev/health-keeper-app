@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCountUp } from "@/hooks/useCountUp";
 
 interface StatsCardProps {
   icon: LucideIcon;
@@ -24,6 +25,19 @@ export function StatsCard({
   variant = "default",
   className,
 }: StatsCardProps) {
+  // Parse numeric value for animation
+  const numericValue = typeof value === "string" 
+    ? parseFloat(value.replace(/,/g, "")) 
+    : value;
+  const hasDecimals = String(value).includes(".");
+  const decimals = hasDecimals ? 1 : 0;
+  
+  const animatedValue = useCountUp({ 
+    end: numericValue, 
+    duration: 1200,
+    decimals 
+  });
+
   const variantStyles = {
     default: {
       card: "bg-card",
@@ -52,6 +66,11 @@ export function StatsCard({
   };
 
   const styles = variantStyles[variant];
+
+  // Format with commas
+  const formattedValue = typeof animatedValue === "number" 
+    ? animatedValue.toLocaleString() 
+    : Number(animatedValue).toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
   return (
     <div 
@@ -94,8 +113,8 @@ export function StatsCard({
 
       {/* Value */}
       <div className="flex items-baseline gap-1">
-        <span className="text-2xl font-black text-foreground tracking-tight">
-          {value}
+        <span className="text-2xl font-black text-foreground tracking-tight tabular-nums">
+          {formattedValue}
         </span>
         {unit && (
           <span className="text-sm text-muted-foreground font-medium">{unit}</span>
