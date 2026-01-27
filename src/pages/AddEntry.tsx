@@ -26,7 +26,7 @@ const options: AddOption[] = [
   {
     icon: Scale,
     label: "Cân nặng",
-    description: "Ghi lại cân nặng hôm nay",
+    description: "Ghi cân nặng",
     path: "/health-metrics?tab=weight&add=true",
     color: "text-primary",
     bgColor: "bg-primary/10",
@@ -34,7 +34,7 @@ const options: AddOption[] = [
   {
     icon: Heart,
     label: "Huyết áp",
-    description: "Đo huyết áp của bạn",
+    description: "Đo huyết áp",
     path: "/health-metrics?tab=blood-pressure&add=true",
     color: "text-destructive",
     bgColor: "bg-destructive/10",
@@ -42,7 +42,7 @@ const options: AddOption[] = [
   {
     icon: Activity,
     label: "Nhịp tim",
-    description: "Ghi lại nhịp tim",
+    description: "Ghi nhịp tim",
     path: "/health-metrics?tab=heart-rate&add=true",
     color: "text-health-info",
     bgColor: "bg-health-info/10",
@@ -50,7 +50,7 @@ const options: AddOption[] = [
   {
     icon: Droplets,
     label: "Đường huyết",
-    description: "Kiểm tra đường huyết",
+    description: "Kiểm tra",
     path: "/health-metrics?tab=blood-sugar&add=true",
     color: "text-health-warning",
     bgColor: "bg-health-warning/10",
@@ -58,7 +58,7 @@ const options: AddOption[] = [
   {
     icon: Utensils,
     label: "Bữa ăn",
-    description: "Thêm bữa ăn mới",
+    description: "Thêm bữa ăn",
     path: "/nutrition?add=true",
     color: "text-health-accent",
     bgColor: "bg-health-accent/10",
@@ -66,7 +66,7 @@ const options: AddOption[] = [
   {
     icon: Footprints,
     label: "Hoạt động",
-    description: "Ghi lại hoạt động",
+    description: "Ghi hoạt động",
     path: "/activities?add=true",
     color: "text-primary",
     bgColor: "bg-primary/10",
@@ -74,7 +74,7 @@ const options: AddOption[] = [
   {
     icon: Pill,
     label: "Nhắc thuốc",
-    description: "Tạo nhắc nhở mới",
+    description: "Tạo nhắc nhở",
     path: "/reminders?add=true",
     color: "text-health-info",
     bgColor: "bg-health-info/10",
@@ -82,7 +82,7 @@ const options: AddOption[] = [
   {
     icon: Stethoscope,
     label: "Lịch khám",
-    description: "Đặt lịch hẹn khám",
+    description: "Đặt lịch hẹn",
     path: "/appointments?add=true",
     color: "text-health-warning",
     bgColor: "bg-health-warning/10",
@@ -94,25 +94,25 @@ export default function AddEntry() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-6 animate-fade-in">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Thêm mới</h1>
-        <p className="text-muted-foreground mb-6">Chọn loại dữ liệu bạn muốn ghi lại</p>
+      <div className="px-4 py-4 animate-fade-in">
+        <h1 className="text-xl font-bold text-foreground mb-1">Thêm mới</h1>
+        <p className="text-xs text-muted-foreground mb-4">Chọn loại dữ liệu cần ghi</p>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           {options.map((option) => {
             const Icon = option.icon;
             return (
               <Card
                 key={option.path}
-                className="cursor-pointer hover:shadow-md transition-all active:scale-95"
+                className="cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
                 onClick={() => navigate(option.path)}
               >
-                <CardContent className="p-4">
-                  <div className={cn("p-3 rounded-xl w-fit mb-3", option.bgColor)}>
-                    <Icon className={cn("w-6 h-6", option.color)} />
+                <CardContent className="p-3">
+                  <div className={cn("p-2.5 rounded-xl w-fit mb-2", option.bgColor)}>
+                    <Icon className={cn("w-5 h-5", option.color)} />
                   </div>
-                  <h3 className="font-semibold text-foreground">{option.label}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{option.description}</p>
+                  <h3 className="text-sm font-semibold text-foreground">{option.label}</h3>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">{option.description}</p>
                 </CardContent>
               </Card>
             );
