@@ -29,12 +29,12 @@ export default function Dashboard() {
               subtitle="BMI: 22.4"
               variant="primary"
             />
-            <StatsCard
+            <CircularProgressCard
               icon={Footprints}
               label="Bước chân"
-              value="4,230"
-              trend="up"
-              trendValue="12%"
+              value={4230}
+              target={10000}
+              unit="bước"
               variant="info"
             />
             <CircularProgressCard
