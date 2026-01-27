@@ -96,7 +96,7 @@ export default function Profile() {
   return (
     <AppLayout>
       <PullToRefresh onRefresh={handleRefresh} className="h-full">
-        <div className="px-4 py-4 animate-fade-in pb-4">
+        <div className="animate-fade-in pb-6">
           <ProfileHeader 
             name={profile.name}
             email={profile.email}
@@ -112,24 +112,47 @@ export default function Profile() {
             }}
           />
 
-          <SettingsList>
-            <SettingItem icon={User} label="Chỉnh sửa hồ sơ" to="/profile/edit" />
+          <SettingsList title="Tài khoản">
+            <SettingItem 
+              icon={User} 
+              label="Chỉnh sửa hồ sơ" 
+              description="Cập nhật thông tin cá nhân"
+              to="/profile/edit" 
+            />
             <SettingItem 
               icon={Bell} 
               label="Thông báo" 
+              description={notificationsEnabled ? "Đang bật" : "Đang tắt"}
               hasSwitch 
               checked={notificationsEnabled}
               onCheckedChange={handleNotificationToggle}
             />
+          </SettingsList>
+
+          <SettingsList title="Tùy chỉnh">
             <SettingItem 
               icon={Moon} 
               label="Chế độ tối" 
+              description={theme === "dark" ? "Đang bật" : "Đang tắt"}
               hasSwitch 
               checked={theme === "dark"}
               onCheckedChange={handleDarkModeToggle}
             />
-            <SettingItem icon={Shield} label="Quyền riêng tư" to="/profile/privacy" />
-            <SettingItem icon={HelpCircle} label="Trợ giúp" to="/profile/help" />
+            <SettingItem 
+              icon={Shield} 
+              label="Quyền riêng tư" 
+              description="Quản lý bảo mật"
+              to="/profile/privacy" 
+            />
+          </SettingsList>
+
+          <SettingsList title="Hỗ trợ">
+            <SettingItem 
+              icon={HelpCircle} 
+              label="Trợ giúp" 
+              description="FAQ & Liên hệ"
+              to="/profile/help" 
+            />
             <SettingItem 
               icon={LogOut} 
               label="Đăng xuất" 
@@ -138,12 +161,12 @@ export default function Profile() {
             />
           </SettingsList>
 
-          <p className="text-center text-[10px] text-muted-foreground mt-4">
-            Phiên bản 1.0.0
+          <p className="text-center text-[10px] text-muted-foreground mt-6">
+            HealthCare v1.0.0
           </p>
 
           <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-            <AlertDialogContent className="max-w-[90%] rounded-lg">
+            <AlertDialogContent className="max-w-[90%] rounded-2xl">
               <AlertDialogHeader>
                 <AlertDialogTitle>Đăng xuất?</AlertDialogTitle>
                 <AlertDialogDescription>
@@ -151,8 +174,11 @@ export default function Profile() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Hủy</AlertDialogCancel>
-                <AlertDialogAction onClick={handleLogout} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                <AlertDialogCancel className="rounded-xl">Hủy</AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={handleLogout} 
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl"
+                >
                   Đăng xuất
                 </AlertDialogAction>
               </AlertDialogFooter>
