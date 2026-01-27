@@ -1,5 +1,4 @@
 import { LucideIcon } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface StatsCardProps {
@@ -26,55 +25,89 @@ export function StatsCard({
   className,
 }: StatsCardProps) {
   const variantStyles = {
-    default: "bg-card hover:shadow-md",
-    primary: "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20 hover:shadow-primary/10",
-    accent: "bg-gradient-to-br from-health-warning/10 to-health-warning/5 border-health-warning/20 hover:shadow-health-warning/10",
-    info: "bg-gradient-to-br from-health-info/10 to-health-info/5 border-health-info/20 hover:shadow-health-info/10",
+    default: {
+      card: "bg-card",
+      iconBg: "bg-muted",
+      iconColor: "text-muted-foreground",
+      ring: "ring-muted",
+    },
+    primary: {
+      card: "bg-gradient-to-br from-primary/15 via-primary/10 to-primary/5",
+      iconBg: "bg-primary",
+      iconColor: "text-primary-foreground",
+      ring: "ring-primary/30",
+    },
+    accent: {
+      card: "bg-gradient-to-br from-orange-500/15 via-orange-500/10 to-orange-500/5",
+      iconBg: "bg-gradient-to-br from-orange-500 to-amber-500",
+      iconColor: "text-white",
+      ring: "ring-orange-500/30",
+    },
+    info: {
+      card: "bg-gradient-to-br from-health-info/15 via-health-info/10 to-health-info/5",
+      iconBg: "bg-health-info",
+      iconColor: "text-white",
+      ring: "ring-health-info/30",
+    },
   };
 
-  const iconStyles = {
-    default: "bg-muted text-muted-foreground",
-    primary: "bg-primary/15 text-primary",
-    accent: "bg-health-warning/15 text-health-warning",
-    info: "bg-health-info/15 text-health-info",
-  };
+  const styles = variantStyles[variant];
 
   return (
-    <Card className={cn(
-      "border shadow-sm transition-all duration-300 cursor-pointer", 
-      variantStyles[variant], 
-      className
-    )}>
-      <CardContent className="p-3.5">
-        <div className="flex items-center justify-between mb-3">
-          <div className={cn("p-2 rounded-xl", iconStyles[variant])}>
-            <Icon className="w-4 h-4" />
-          </div>
-          {trend && trendValue && (
-            <span
-              className={cn(
-                "text-[10px] font-semibold px-2 py-1 rounded-full",
-                trend === "up" && "bg-primary/15 text-primary",
-                trend === "down" && "bg-destructive/15 text-destructive",
-                trend === "neutral" && "bg-muted text-muted-foreground"
-              )}
-            >
-              {trend === "up" && "↑ "}
-              {trend === "down" && "↓ "}
-              {trendValue}
-            </span>
-          )}
+    <div 
+      className={cn(
+        "relative p-4 rounded-3xl transition-all duration-300 hover:scale-[1.02] cursor-pointer",
+        styles.card,
+        className
+      )}
+    >
+      {/* Icon Circle */}
+      <div className="flex items-center justify-between mb-3">
+        <div className={cn(
+          "w-10 h-10 rounded-full flex items-center justify-center shadow-lg ring-4",
+          styles.iconBg,
+          styles.ring
+        )}>
+          <Icon className={cn("w-5 h-5", styles.iconColor)} />
         </div>
-
-        <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-medium mb-1">{label}</p>
-        <div className="flex items-baseline gap-1">
-          <span className="text-2xl font-bold text-foreground tracking-tight">{value}</span>
-          {unit && <span className="text-sm text-muted-foreground font-medium">{unit}</span>}
-        </div>
-        {subtitle && (
-          <p className="text-[11px] text-muted-foreground mt-1 font-medium">{subtitle}</p>
+        
+        {trend && trendValue && (
+          <span
+            className={cn(
+              "text-[10px] font-bold px-2 py-1 rounded-full",
+              trend === "up" && "bg-primary/20 text-primary",
+              trend === "down" && "bg-destructive/20 text-destructive",
+              trend === "neutral" && "bg-muted text-muted-foreground"
+            )}
+          >
+            {trend === "up" && "↑"}
+            {trend === "down" && "↓"}
+            {trendValue}
+          </span>
         )}
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Label */}
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">
+        {label}
+      </p>
+
+      {/* Value */}
+      <div className="flex items-baseline gap-1">
+        <span className="text-2xl font-black text-foreground tracking-tight">
+          {value}
+        </span>
+        {unit && (
+          <span className="text-sm text-muted-foreground font-medium">{unit}</span>
+        )}
+      </div>
+
+      {/* Subtitle */}
+      {subtitle && (
+        <p className="text-xs text-muted-foreground mt-1 font-medium opacity-80">
+          {subtitle}
+        </p>
+      )}
+    </div>
   );
 }
