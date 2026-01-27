@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
 import { AppLogo } from "@/components/common/AppLogo";
 import { PasswordStrength } from "@/components/auth/PasswordStrength";
+import { AnimatedContainer } from "@/components/common/AnimatedContainer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -47,6 +47,7 @@ export default function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
 
   const loginForm = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -93,24 +94,24 @@ export default function Auth() {
         </p>
 
         <div className="w-full space-y-4">
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6 h-12 bg-muted/50 p-1 rounded-full">
               <TabsTrigger 
                 value="login" 
-                className="text-sm rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                className="text-sm rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300"
               >
                 Đăng nhập
               </TabsTrigger>
               <TabsTrigger 
                 value="register" 
-                className="text-sm rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                className="text-sm rounded-full data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300"
               >
                 Đăng ký
               </TabsTrigger>
             </TabsList>
 
             {/* Login Tab */}
-            <TabsContent value="login" className="mt-0 space-y-4">
+            <TabsContent value="login" className="mt-0 space-y-4 data-[state=active]:animate-[fadeSlideIn_0.4s_ease-out] data-[state=inactive]:animate-[fadeSlideOut_0.2s_ease-out]">
               <Form {...loginForm}>
                 <form onSubmit={loginForm.handleSubmit(onLogin)} className="space-y-4">
                   <FormField
@@ -187,7 +188,7 @@ export default function Auth() {
             </TabsContent>
 
             {/* Register Tab */}
-            <TabsContent value="register" className="mt-0 space-y-4">
+            <TabsContent value="register" className="mt-0 space-y-4 data-[state=active]:animate-[fadeSlideIn_0.4s_ease-out] data-[state=inactive]:animate-[fadeSlideOut_0.2s_ease-out]">
               <Form {...registerForm}>
                 <form onSubmit={registerForm.handleSubmit(onRegister)} className="space-y-4">
                   <FormField
