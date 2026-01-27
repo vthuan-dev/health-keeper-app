@@ -9,7 +9,7 @@ import { TodayReminders } from "@/components/dashboard/TodayReminders";
 export default function Dashboard() {
   return (
     <AppLayout>
-      <div className="animate-fade-in">
+      <div className="animate-fade-in space-y-5">
         {/* Header */}
         <DashboardHeader userName="Nguyễn Văn A" />
 
@@ -17,9 +17,9 @@ export default function Dashboard() {
         <DailyPlanCard />
 
         {/* Quick Stats */}
-        <div className="px-4 mt-4">
-          <h2 className="text-sm font-semibold text-foreground mb-2">Chỉ số hôm nay</h2>
-          <div className="grid grid-cols-3 gap-2">
+        <div className="px-4">
+          <h2 className="text-base font-bold text-foreground mb-3">Chỉ số hôm nay</h2>
+          <div className="grid grid-cols-3 gap-3">
             <StatsCard
               icon={Scale}
               label="Cân nặng"
@@ -34,7 +34,7 @@ export default function Dashboard() {
               value="4,230"
               trend="up"
               trendValue="12%"
-              variant="default"
+              variant="info"
             />
             <StatsCard
               icon={Flame}
@@ -48,14 +48,10 @@ export default function Dashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-4">
-          <QuickActions />
-        </div>
+        <QuickActions />
 
         {/* Today's Reminders */}
-        <div className="mt-4">
-          <TodayReminders />
-        </div>
+        <TodayReminders />
       </div>
     </AppLayout>
   );
