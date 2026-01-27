@@ -2,6 +2,12 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Footprints, Flame, Clock, Plus } from "lucide-react";
+import { WeeklyChart } from "@/components/activities/WeeklyChart";
+import { ComparisonBadge } from "@/components/activities/ComparisonBadge";
+
+// Mock data - today vs yesterday
+const todayStats = { steps: 4230, calories: 320, minutes: 45 };
+const yesterdayStats = { steps: 5800, calories: 280, minutes: 38 };
 
 export default function Activities() {
   return (
@@ -32,16 +38,25 @@ export default function Activities() {
                     stroke="white"
                     strokeWidth="8"
                     fill="none"
-                    strokeDasharray={`${(4230 / 10000) * 213.6} 213.6`}
+                    strokeDasharray={`${(todayStats.steps / 10000) * 213.6} 213.6`}
                     strokeLinecap="round"
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-lg font-bold text-primary-foreground">42%</span>
+                  <span className="text-lg font-bold text-primary-foreground">
+                    {Math.round((todayStats.steps / 10000) * 100)}%
+                  </span>
                 </div>
               </div>
               <div className="flex-1">
-                <p className="text-2xl font-bold text-primary-foreground">4,230</p>
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="text-2xl font-bold text-primary-foreground">{todayStats.steps.toLocaleString()}</p>
+                  <ComparisonBadge
+                    current={todayStats.steps}
+                    previous={yesterdayStats.steps}
+                    className="bg-white/20 text-white"
+                  />
+                </div>
                 <p className="text-xs text-primary-foreground/80">bước hôm nay</p>
                 <p className="text-[10px] text-primary-foreground/60 mt-1">Mục tiêu: 10,000 bước</p>
               </div>
@@ -49,30 +64,48 @@ export default function Activities() {
           </CardContent>
         </Card>
 
-        {/* Stats Grid */}
+        {/* Stats Grid with Comparison */}
         <div className="grid grid-cols-2 gap-3 mb-4">
           <Card>
-            <CardContent className="p-3 flex items-center gap-2.5">
-              <div className="p-2 rounded-full bg-health-warning/10">
-                <Flame className="w-4 h-4 text-health-warning" />
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="p-2 rounded-full bg-health-warning/10">
+                  <Flame className="w-4 h-4 text-health-warning" />
+                </div>
+                <div>
+                  <p className="text-lg font-bold">{todayStats.calories}</p>
+                  <p className="text-[10px] text-muted-foreground">Calo đốt</p>
+                </div>
               </div>
-              <div>
-                <p className="text-lg font-bold">320</p>
-                <p className="text-[10px] text-muted-foreground">Calo đốt</p>
-              </div>
+              <ComparisonBadge
+                current={todayStats.calories}
+                previous={yesterdayStats.calories}
+              />
             </CardContent>
           </Card>
           <Card>
-            <CardContent className="p-3 flex items-center gap-2.5">
-              <div className="p-2 rounded-full bg-primary/10">
-                <Clock className="w-4 h-4 text-primary" />
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2.5 mb-2">
+                <div className="p-2 rounded-full bg-primary/10">
+                  <Clock className="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-lg font-bold">{todayStats.minutes}</p>
+                  <p className="text-[10px] text-muted-foreground">Phút vận động</p>
+                </div>
               </div>
-              <div>
-                <p className="text-lg font-bold">45</p>
-                <p className="text-[10px] text-muted-foreground">Phút vận động</p>
-              </div>
+              <ComparisonBadge
+                current={todayStats.minutes}
+                previous={yesterdayStats.minutes}
+                unit="p"
+              />
             </CardContent>
           </Card>
+        </div>
+
+        {/* Weekly Chart */}
+        <div className="mb-4">
+          <WeeklyChart />
         </div>
 
         {/* Activity List */}
