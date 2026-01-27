@@ -8,7 +8,8 @@ import {
   Moon, 
   Shield, 
   HelpCircle, 
-  LogOut 
+  LogOut,
+  Zap
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -130,6 +131,12 @@ export default function Profile() {
           </SettingsList>
 
           <SettingsList title="Tùy chỉnh">
+            <SettingItem 
+              icon={Zap} 
+              label="Menu nhanh" 
+              description="Tùy chỉnh nút + ở thanh điều hướng"
+              to="/profile/quick-menu" 
+            />
             <SettingItem 
               icon={Moon} 
               label="Chế độ tối" 

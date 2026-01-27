@@ -12,6 +12,7 @@ import EditProfile from "./pages/EditProfile";
 import NotificationSettings from "./pages/NotificationSettings";
 import PrivacySettings from "./pages/PrivacySettings";
 import HelpSupport from "./pages/HelpSupport";
+import QuickMenuSettings from "./pages/QuickMenuSettings";
 import AddEntry from "./pages/AddEntry";
 import Auth from "./pages/Auth";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/profile/notifications" element={<NotificationSettings />} />
             <Route path="/profile/privacy" element={<PrivacySettings />} />
             <Route path="/profile/help" element={<HelpSupport />} />
+            <Route path="/profile/quick-menu" element={<QuickMenuSettings />} />
             <Route path="/add" element={<AddEntry />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
