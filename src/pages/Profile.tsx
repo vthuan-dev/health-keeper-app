@@ -23,6 +23,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { PullToRefresh } from "@/components/common/PullToRefresh";
+import { toast } from "@/hooks/use-toast";
 
 interface UserProfile {
   name: string;
@@ -59,6 +61,22 @@ export default function Profile() {
     }
   }, []);
 
+  const loadProfile = () => {
+    const savedProfile = localStorage.getItem("userProfile");
+    if (savedProfile) {
+      setProfile(JSON.parse(savedProfile));
+    }
+  };
+
+  const handleRefresh = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    loadProfile();
+    toast({
+      title: "Đã cập nhật!",
+      description: "Hồ sơ đã được làm mới.",
+    });
+  };
+
   const handleNotificationToggle = (checked: boolean) => {
     setNotificationsEnabled(checked);
     localStorage.setItem("notificationsEnabled", JSON.stringify(checked));
@@ -77,69 +95,71 @@ export default function Profile() {
 
   return (
     <AppLayout>
-      <div className="px-4 py-4 animate-fade-in">
-        <ProfileHeader 
-          name={profile.name}
-          email={profile.email}
-          initials={profile.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
-        />
-
-        <HealthStatsCard 
-          stats={{
-            age: profile.age,
-            height: profile.height,
-            weight: profile.weight,
-            bmi: bmi,
-          }}
-        />
-
-        <SettingsList>
-          <SettingItem icon={User} label="Chỉnh sửa hồ sơ" to="/profile/edit" />
-          <SettingItem 
-            icon={Bell} 
-            label="Thông báo" 
-            hasSwitch 
-            checked={notificationsEnabled}
-            onCheckedChange={handleNotificationToggle}
+      <PullToRefresh onRefresh={handleRefresh} className="h-full">
+        <div className="px-4 py-4 animate-fade-in pb-4">
+          <ProfileHeader 
+            name={profile.name}
+            email={profile.email}
+            initials={profile.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
           />
-          <SettingItem 
-            icon={Moon} 
-            label="Chế độ tối" 
-            hasSwitch 
-            checked={theme === "dark"}
-            onCheckedChange={handleDarkModeToggle}
-          />
-          <SettingItem icon={Shield} label="Quyền riêng tư" to="/profile/privacy" />
-          <SettingItem icon={HelpCircle} label="Trợ giúp" to="/profile/help" />
-          <SettingItem 
-            icon={LogOut} 
-            label="Đăng xuất" 
-            isDestructive 
-            onClick={() => setShowLogoutDialog(true)}
-          />
-        </SettingsList>
 
-        <p className="text-center text-[10px] text-muted-foreground mt-4">
-          Phiên bản 1.0.0
-        </p>
+          <HealthStatsCard 
+            stats={{
+              age: profile.age,
+              height: profile.height,
+              weight: profile.weight,
+              bmi: bmi,
+            }}
+          />
 
-        <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-          <AlertDialogContent className="max-w-[90%] rounded-lg">
-            <AlertDialogHeader>
-              <AlertDialogTitle>Đăng xuất?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Bạn có chắc chắn muốn đăng xuất khỏi tài khoản?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Hủy</AlertDialogCancel>
-              <AlertDialogAction onClick={handleLogout} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                Đăng xuất
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
+          <SettingsList>
+            <SettingItem icon={User} label="Chỉnh sửa hồ sơ" to="/profile/edit" />
+            <SettingItem 
+              icon={Bell} 
+              label="Thông báo" 
+              hasSwitch 
+              checked={notificationsEnabled}
+              onCheckedChange={handleNotificationToggle}
+            />
+            <SettingItem 
+              icon={Moon} 
+              label="Chế độ tối" 
+              hasSwitch 
+              checked={theme === "dark"}
+              onCheckedChange={handleDarkModeToggle}
+            />
+            <SettingItem icon={Shield} label="Quyền riêng tư" to="/profile/privacy" />
+            <SettingItem icon={HelpCircle} label="Trợ giúp" to="/profile/help" />
+            <SettingItem 
+              icon={LogOut} 
+              label="Đăng xuất" 
+              isDestructive 
+              onClick={() => setShowLogoutDialog(true)}
+            />
+          </SettingsList>
+
+          <p className="text-center text-[10px] text-muted-foreground mt-4">
+            Phiên bản 1.0.0
+          </p>
+
+          <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+            <AlertDialogContent className="max-w-[90%] rounded-lg">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Đăng xuất?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Bạn có chắc chắn muốn đăng xuất khỏi tài khoản?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Hủy</AlertDialogCancel>
+                <AlertDialogAction onClick={handleLogout} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                  Đăng xuất
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </PullToRefresh>
     </AppLayout>
   );
 }
