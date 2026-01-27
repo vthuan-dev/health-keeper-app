@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { BottomNavigation } from "./BottomNavigation";
+import { AIChatbot } from "@/components/chatbot/AIChatbot";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ export function AppLayout({ children, hideNav = false }: AppLayoutProps) {
         {children}
       </main>
       {!hideNav && <BottomNavigation />}
+      {!hideNav && <AIChatbot />}
     </div>
   );
 }
