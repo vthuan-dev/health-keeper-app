@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Scale, Heart, Activity, Droplets, Utensils, Footprints, Pill, Stethoscope, LucideIcon } from "lucide-react";
+import { 
+  X, 
+  Weight, 
+  HeartPulse, 
+  ActivitySquare, 
+  Droplet, 
+  UtensilsCrossed, 
+  Dumbbell, 
+  PillBottle, 
+  CalendarHeart,
+  LucideIcon 
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface QuickMenuItem {
@@ -14,20 +25,20 @@ export interface QuickMenuItem {
 }
 
 export const allMenuItems: QuickMenuItem[] = [
-  { id: "weight", icon: "Scale", label: "Cân nặng", path: "/health-metrics?tab=weight&add=true", color: "text-primary", bgColor: "bg-primary", gradient: "from-emerald-400 to-teal-500" },
-  { id: "blood-pressure", icon: "Heart", label: "Huyết áp", path: "/health-metrics?tab=blood-pressure&add=true", color: "text-rose-500", bgColor: "bg-rose-500", gradient: "from-rose-400 to-pink-500" },
-  { id: "heart-rate", icon: "Activity", label: "Nhịp tim", path: "/health-metrics?tab=heart-rate&add=true", color: "text-sky-500", bgColor: "bg-sky-500", gradient: "from-sky-400 to-blue-500" },
-  { id: "blood-sugar", icon: "Droplets", label: "Đường huyết", path: "/health-metrics?tab=blood-sugar&add=true", color: "text-amber-500", bgColor: "bg-amber-500", gradient: "from-amber-400 to-orange-500" },
-  { id: "meal", icon: "Utensils", label: "Bữa ăn", path: "/nutrition?add=true", color: "text-emerald-500", bgColor: "bg-emerald-500", gradient: "from-green-400 to-emerald-500" },
-  { id: "activity", icon: "Footprints", label: "Hoạt động", path: "/activities?add=true", color: "text-violet-500", bgColor: "bg-violet-500", gradient: "from-violet-400 to-purple-500" },
-  { id: "medicine", icon: "Pill", label: "Nhắc thuốc", path: "/reminders?add=true", color: "text-cyan-500", bgColor: "bg-cyan-500", gradient: "from-cyan-400 to-teal-500" },
-  { id: "appointment", icon: "Stethoscope", label: "Lịch khám", path: "/appointments?add=true", color: "text-orange-500", bgColor: "bg-orange-500", gradient: "from-orange-400 to-red-500" },
+  { id: "weight", icon: "Weight", label: "Cân nặng", path: "/health-metrics?tab=weight&add=true", color: "text-primary", bgColor: "bg-primary", gradient: "from-emerald-400 to-teal-600" },
+  { id: "blood-pressure", icon: "HeartPulse", label: "Huyết áp", path: "/health-metrics?tab=blood-pressure&add=true", color: "text-rose-500", bgColor: "bg-rose-500", gradient: "from-rose-400 to-pink-600" },
+  { id: "heart-rate", icon: "ActivitySquare", label: "Nhịp tim", path: "/health-metrics?tab=heart-rate&add=true", color: "text-sky-500", bgColor: "bg-sky-500", gradient: "from-sky-400 to-blue-600" },
+  { id: "blood-sugar", icon: "Droplet", label: "Đường huyết", path: "/health-metrics?tab=blood-sugar&add=true", color: "text-amber-500", bgColor: "bg-amber-500", gradient: "from-amber-400 to-orange-600" },
+  { id: "meal", icon: "UtensilsCrossed", label: "Bữa ăn", path: "/nutrition?add=true", color: "text-emerald-500", bgColor: "bg-emerald-500", gradient: "from-lime-400 to-green-600" },
+  { id: "activity", icon: "Dumbbell", label: "Hoạt động", path: "/activities?add=true", color: "text-violet-500", bgColor: "bg-violet-500", gradient: "from-violet-400 to-purple-600" },
+  { id: "medicine", icon: "PillBottle", label: "Nhắc thuốc", path: "/reminders?add=true", color: "text-cyan-500", bgColor: "bg-cyan-500", gradient: "from-cyan-400 to-teal-600" },
+  { id: "appointment", icon: "CalendarHeart", label: "Lịch khám", path: "/appointments?add=true", color: "text-orange-500", bgColor: "bg-orange-500", gradient: "from-orange-400 to-red-600" },
 ];
 
 const defaultSelectedIds = ["weight", "blood-pressure", "heart-rate", "meal", "activity"];
 
 const iconMap: Record<string, LucideIcon> = {
-  Scale, Heart, Activity, Droplets, Utensils, Footprints, Pill, Stethoscope
+  Weight, HeartPulse, ActivitySquare, Droplet, UtensilsCrossed, Dumbbell, PillBottle, CalendarHeart
 };
 
 export function getSelectedMenuItems(): QuickMenuItem[] {
