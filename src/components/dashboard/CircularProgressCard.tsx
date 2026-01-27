@@ -1,7 +1,8 @@
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCountUp } from "@/hooks/useCountUp";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import confetti from "canvas-confetti";
 
 interface CircularProgressCardProps {
   icon: LucideIcon;
@@ -23,6 +24,9 @@ export function CircularProgressCard({
   className,
 }: CircularProgressCardProps) {
   const [animatedProgress, setAnimatedProgress] = useState(0);
+  const [hasTriggeredConfetti, setHasTriggeredConfetti] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  
   const percentage = Math.min((value / target) * 100, 100);
   const circumference = 2 * Math.PI * 36;
   
@@ -36,6 +40,48 @@ export function CircularProgressCard({
     }, 100);
     return () => clearTimeout(timer);
   }, [percentage]);
+
+  // Trigger confetti when reaching 100%
+  useEffect(() => {
+    if (percentage >= 100 && !hasTriggeredConfetti && cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+      // Delay confetti to sync with count-up animation
+      const timer = setTimeout(() => {
+        // First burst
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { x, y },
+          colors: ['#4CAF50', '#66BB6A', '#81C784', '#FFD700', '#FFA500'],
+          ticks: 200,
+          gravity: 1.2,
+          scalar: 0.8,
+          shapes: ['circle', 'square'],
+        });
+
+        // Second burst with stars
+        setTimeout(() => {
+          confetti({
+            particleCount: 30,
+            spread: 80,
+            origin: { x, y },
+            colors: ['#4CAF50', '#66BB6A', '#FFD700'],
+            ticks: 150,
+            gravity: 0.8,
+            scalar: 1,
+            shapes: ['star'],
+          });
+        }, 150);
+
+        setHasTriggeredConfetti(true);
+      }, 1400);
+
+      return () => clearTimeout(timer);
+    }
+  }, [percentage, hasTriggeredConfetti]);
 
   const strokeDashoffset = circumference - (animatedProgress / 100) * circumference;
 
@@ -61,15 +107,25 @@ export function CircularProgressCard({
   };
 
   const styles = variantStyles[variant];
+  const isCompleted = percentage >= 100;
 
   return (
     <div 
+      ref={cardRef}
       className={cn(
         "relative p-4 rounded-3xl transition-all duration-300 hover:scale-[1.02] cursor-pointer",
         styles.card,
+        isCompleted && "ring-2 ring-primary/50 shadow-lg",
         className
       )}
     >
+      {/* Completed badge */}
+      {isCompleted && (
+        <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md animate-bounce">
+          ✓ Hoàn thành!
+        </div>
+      )}
+
       {/* Circular Progress */}
       <div className="flex justify-center mb-2">
         <div className="relative w-20 h-20">
@@ -91,7 +147,11 @@ export function CircularProgressCard({
               fill="none"
               strokeWidth="6"
               strokeLinecap="round"
-              className={cn(styles.stroke, "transition-all duration-1000 ease-out")}
+              className={cn(
+                styles.stroke, 
+                "transition-all duration-1000 ease-out",
+                isCompleted && "drop-shadow-[0_0_6px_rgba(76,175,80,0.6)]"
+              )}
               style={{
                 strokeDasharray: circumference,
                 strokeDashoffset: strokeDashoffset,
@@ -99,7 +159,10 @@ export function CircularProgressCard({
             />
           </svg>
           {/* Center icon */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className={cn(
+            "absolute inset-0 flex items-center justify-center transition-transform duration-300",
+            isCompleted && "scale-110"
+          )}>
             <Icon className={cn("w-6 h-6", styles.textColor)} />
           </div>
         </div>
@@ -121,7 +184,11 @@ export function CircularProgressCard({
       </div>
 
       {/* Percentage */}
-      <p className={cn("text-xs font-bold text-center mt-1 tabular-nums", styles.textColor)}>
+      <p className={cn(
+        "text-xs font-bold text-center mt-1 tabular-nums transition-all duration-300",
+        styles.textColor,
+        isCompleted && "scale-110"
+      )}>
         {Math.round(Number(animatedPercentage))}%
       </p>
     </div>
