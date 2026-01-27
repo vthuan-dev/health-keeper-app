@@ -17,6 +17,9 @@ import AddEntry from "./pages/AddEntry";
 import Auth from "./pages/Auth";
 import ForgotPassword from "./pages/ForgotPassword";
 import HealthMetrics from "./pages/HealthMetrics";
+import Nutrition from "./pages/Nutrition";
+import Reminders from "./pages/Reminders";
+import Appointments from "./pages/Appointments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +45,9 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/health-metrics" element={<HealthMetrics />} />
+            <Route path="/nutrition" element={<Nutrition />} />
+            <Route path="/reminders" element={<Reminders />} />
+            <Route path="/appointments" element={<Appointments />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
