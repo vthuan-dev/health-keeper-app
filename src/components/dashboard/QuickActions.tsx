@@ -46,20 +46,20 @@ export function QuickActions() {
 
   return (
     <div className="px-4">
-      <h2 className="text-sm font-semibold text-foreground mb-3">Thao tác nhanh</h2>
-      <div className="grid grid-cols-4 gap-3">
+      <h2 className="text-sm font-semibold text-foreground mb-2">Thao tác nhanh</h2>
+      <div className="grid grid-cols-4 gap-2">
         {actions.map((action) => {
           const Icon = action.icon;
           return (
             <button
               key={action.path}
               onClick={() => navigate(action.path)}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-card border border-border hover:shadow-md transition-all active:scale-95"
+              className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl bg-card border border-border hover:shadow-md transition-all active:scale-95"
             >
-              <div className={cn("p-3 rounded-full", action.bgColor)}>
-                <Icon className={cn("w-5 h-5", action.color)} />
+              <div className={cn("p-2.5 rounded-full", action.bgColor)}>
+                <Icon className={cn("w-4 h-4", action.color)} />
               </div>
-              <span className="text-xs font-medium text-foreground text-center">
+              <span className="text-[11px] font-medium text-foreground text-center leading-tight">
                 {action.label}
               </span>
             </button>

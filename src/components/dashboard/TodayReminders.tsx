@@ -30,9 +30,9 @@ export function TodayReminders() {
 
   return (
     <div className="px-4">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <h2 className="text-sm font-semibold text-foreground">Nhắc nhở hôm nay</h2>
-        <Button variant="ghost" size="sm" className="text-primary text-xs h-auto py-1">
+        <Button variant="ghost" size="sm" className="text-primary text-xs h-auto py-0.5 px-2">
           Xem tất cả
         </Button>
       </div>
@@ -40,34 +40,34 @@ export function TodayReminders() {
       <div className="space-y-2">
         {pendingReminders.length === 0 ? (
           <Card className="border-dashed">
-            <CardContent className="p-4 text-center">
-              <Check className="w-8 h-8 text-primary mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">
-                Tuyệt vời! Bạn đã hoàn thành tất cả nhắc nhở
+            <CardContent className="p-3 text-center">
+              <Check className="w-6 h-6 text-primary mx-auto mb-1" />
+              <p className="text-xs text-muted-foreground">
+                Bạn đã hoàn thành tất cả nhắc nhở
               </p>
             </CardContent>
           </Card>
         ) : (
-          pendingReminders.map((reminder) => {
+          pendingReminders.slice(0, 2).map((reminder) => {
             const config = typeConfig[reminder.type];
             const Icon = config.icon;
 
             return (
               <Card key={reminder.id} className="border">
-                <CardContent className="p-3 flex items-center gap-3">
-                  <div className={cn("p-2 rounded-lg", config.bg)}>
-                    <Icon className={cn("w-4 h-4", config.color)} />
+                <CardContent className="p-2.5 flex items-center gap-2.5">
+                  <div className={cn("p-1.5 rounded-lg", config.bg)}>
+                    <Icon className={cn("w-3.5 h-3.5", config.color)} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">
                       {reminder.title}
                     </p>
-                    <p className="text-xs text-muted-foreground">{reminder.time}</p>
+                    <p className="text-[10px] text-muted-foreground">{reminder.time}</p>
                   </div>
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-8 px-3 text-xs border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                    className="h-7 px-2.5 text-[11px] border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                   >
                     Xong
                   </Button>
