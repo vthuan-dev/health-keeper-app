@@ -41,7 +41,7 @@ export default function Dashboard() {
               label="Calo"
               value="1,250"
               unit="kcal"
-              subtitle="Mục tiêu: 1,800"
+              subtitle="/ 1,800"
               variant="accent"
             />
           </div>
